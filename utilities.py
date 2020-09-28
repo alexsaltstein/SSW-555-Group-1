@@ -94,7 +94,7 @@ def us07AgeOver150(individuals):
     KEY_WORD = "ERROR: INDIVIDUALS: US07: "
     output = []
     for indi in individuals:
-        isOver150 = int(indi.age) > 149
+        isOver150 = indi.age != '' and int(indi.age) > 149
         if isOver150:
             print(KEY_WORD + indi.iD + ": Age " + indi.age + ", over 150")
             output.append(indi.iD)
