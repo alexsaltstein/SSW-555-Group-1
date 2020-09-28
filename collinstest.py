@@ -40,7 +40,7 @@ class us07AgeOver150(unittest.TestCase):
     def testIndiNoAge(self):
         I1 = script.Individual("I1")
         I2 = script.Individual("I2")
-        output = utilities.us07AgeOver150([I1, I2])
+        output = utilities.us07AgeOver150([])
         self.assertEqual(output, [])
    
 

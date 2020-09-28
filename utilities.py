@@ -9,6 +9,7 @@ from datetime import date
     date. If there is an error, outputs information about error and
     list of id's with errors
 '''
+
 def us01DatesBeforeCurrentDate(individuals, families):
     KEY_WORD = "ERROR: US01: "
     output = []
@@ -96,7 +97,7 @@ def us07AgeOver150(individuals):
     for indi in individuals:
         isOver150 = indi.age != '' and int(indi.age) > 149
         if isOver150:
-            print(KEY_WORD + indi.iD + ": Age " + indi.age + ", over 150")
+            print(KEY_WORD + indi.iD + ": Age " + str(indi.age) + ", over 150")
             output.append(indi.iD)
     return output
 
