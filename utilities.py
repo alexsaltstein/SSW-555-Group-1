@@ -186,17 +186,6 @@ def us10MarriageAfter14(listOfFamilies, listOfIndividuals):
                 output.append(i.iD)
     return output
 
-<<<<<<< HEAD
-def us14MultipleBirths(families):
-    KEY_WORD = "ERROR: FAMILY : US14: "
-    output = []
-    for fam in families:
-        if len(fam.children) > 4:
-            print(KEY_WORD + fam.iD + " has more than 5 children")
-            output.append(fam.iD)
-    return output
-=======
-
 '''
     This function loops through families and makes sure nobody is married to two people at the same time.
 '''
@@ -303,4 +292,12 @@ def us12ParentsNotTooOld(families, individuals):
     if tooOld:
         print(KEY_WORD + ind1 + " is more than " + years + " years older than their child, " + ind2 + ". Family " + f1)
     return output
->>>>>>> 351614fbf183c0cc8b3e462db3dbeeb5daea34d3
+
+def us14MultipleBirths(families):
+  KEY_WORD = "ERROR: FAMILY : US14: "
+  output = []
+  for fam in families:
+    if len(fam.children) > 5:
+      print(KEY_WORD + fam.iD + " has more than 5 children")
+      output.append(fam.iD)
+  return output
