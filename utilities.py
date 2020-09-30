@@ -17,21 +17,21 @@ def us01DatesBeforeCurrentDate(individuals, families):
     # This needs to be fixed merp  merp
     #now = now.strftime('%d %b %Y')
     # the now date time is not the right type to subtract
-    dateStr = now.strftime("%d %b %Y ")
-    now = datetime.strptime(dateStr, '%d %b %Y')
+#    dateStr = now.strftime("%d %b %Y ")
+#    now = datetime.strptime(dateStr, '%d %b %Y')
     for x in individuals:
-        if (now - datetime.strptime(x.birthday, '%d %b %Y')).days <= 0:
-            print(KEY_WORD + x.iD + ": Born " + x.birthday + " after today " + now)
+        if int((now - datetime.strptime(x.birthday, '%d %b %Y')).days) <= 0:
+            print(KEY_WORD + x.iD + ": Born " + x.birthday + " after today " + str(now))
             output.append(x.iD)
-        if (now - datetime.strptime(x.death, '%d %b %Y')).days <= 0:
-            print(KEY_WORD + x.iD + ": Died " + x.death + " after today " + now)
+        if x.death != "NA" and int((now - datetime.strptime(x.death, '%d %b %Y')).days) <= 0:
+            print(KEY_WORD + x.iD + ": Died " + x.death + " after today " + str(now))
             output.append(x.iD)
     for y in families:
-        if (now - datetime.strptime(y.married, '%d %b %Y')).days <= 0:
-            print(KEY_WORD + x.iD + ": Married " + y.married + " after today " + now)
+        if int((now - datetime.strptime(y.married, '%d %b %Y')).days) <= 0:
+            print(KEY_WORD + x.iD + ": Married " + y.married + " after today " + str(now))
             output.append(y.iD)
-        if ( now - datetime.strptime(y.divorced, '%d %b %Y')).days <= 0:
-            print(KEY_WORD + x.iD + ": Died " + x.death + " after today " + now)
+        if y.divorced != "NA" and int((now - datetime.strptime(y.divorced, '%d %b %Y')).days) <= 0:
+            print(KEY_WORD + y.iD + ": Divorced " + y.divorced + " after today " + str(now))
             output.append(y.iD)
     return output
 
