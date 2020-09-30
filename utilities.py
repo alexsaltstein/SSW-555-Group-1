@@ -25,7 +25,7 @@ def us01DatesBeforeCurrentDate(individuals, families):
         if (now - datetime.strptime(x.death, '%d %b %Y')).days <= 0:
             print(KEY_WORD + x.iD + ": Died " + x.death + " after today " + now)
             output.append(x.iD)
-    for y in familes:
+    for y in families:
         if (now - datetime.strptime(y.married, '%d %b %Y')).days <= 0:
             print(KEY_WORD + x.iD + ": Married " + y.married + " after today " + now)
             output.append(y.iD)
