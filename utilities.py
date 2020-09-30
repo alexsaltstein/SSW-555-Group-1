@@ -14,11 +14,6 @@ def us01DatesBeforeCurrentDate(individuals, families):
     KEY_WORD = "ERROR: US01: "
     output = []
     now = datetime.now()
-    # This needs to be fixed merp  merp
-    #now = now.strftime('%d %b %Y')
-    # the now date time is not the right type to subtract
-#    dateStr = now.strftime("%d %b %Y ")
-#    now = datetime.strptime(dateStr, '%d %b %Y')
     for x in individuals:
         if int((now - datetime.strptime(x.birthday, '%d %b %Y')).days) <= 0:
             print(KEY_WORD + x.iD + ": Born " + x.birthday + " after today " + str(now))
