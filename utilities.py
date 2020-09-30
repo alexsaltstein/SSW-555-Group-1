@@ -9,7 +9,6 @@ from datetime import date
     date. If there is an error, outputs information about error and
     list of id's with errors
 '''
-
 def us01DatesBeforeCurrentDate(individuals, families):
     KEY_WORD = "ERROR: US01: "
     output = []
@@ -36,13 +35,11 @@ def us01DatesBeforeCurrentDate(individuals, families):
     return output
 
 
-
 '''
     This function loops through individuals and families to make sure that
     birth occurs before the marriage of an individual. If there is an error, 
     outputs information about error and list of id's with errors
 '''
-
 def us02BirthBeforeMarriage(individuals, families):
     KEY_WORD = "ERROR: US02: "
     output = []
@@ -69,6 +66,7 @@ def us03DeathBeforeBirth(individuals):
             output.append(indi.iD)
     return output
     
+    
 '''
     This function loops through families and makes sure that
     marriage occurs before divorce and if there is an error outputs
@@ -84,13 +82,13 @@ def us04MarriageBeforeDivorce(families):
             output.append(fam.iD)
     return output
 
+
 '''
     This function loops through individuals and makes sure that
     individuals ages are less than 150 years of age. (i.age < 150)
     If there is an error, outputs information about error and list of id's
     with errors
 '''
-
 def us07AgeOver150(individuals):
     KEY_WORD = "ERROR: INDIVIDUALS: US07: "
     output = []
@@ -101,12 +99,12 @@ def us07AgeOver150(individuals):
             output.append(indi.iD)
     return output
 
+
 '''
     This function loops through families and makes sure that
     birth of all children occur after marriage and if there is an error, outputs 
     information about error and list of id's with errors.
 '''
-
 def us08BirthBeforeMarriage(families, individuals):
     KEY_WORD = "ERROR: FAMILY: US08: "
     output = []
