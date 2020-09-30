@@ -166,6 +166,8 @@ def printErrors():
   utils.us08BirthBeforeMarriage(families, individuals)
   utils.us09BirthBeforeDeathOfParents(families, individuals)
   utils.us10MarriageAfter14(families, individuals)
+  utils.us11NoBigamy(families, individuals)
+  utils.us12ParentsNotTooOld(families, individuals)
 
 findat(f)
 printIndividuals(individuals)
