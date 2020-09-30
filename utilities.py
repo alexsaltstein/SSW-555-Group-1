@@ -271,19 +271,20 @@ def us12ParentsNotTooOld(families, individuals):
         w = next(w for w in individuals if w.iD == wid)
         for child in family.children:
             c = next(c for c in individuals if c.iD == child)
-            if (datetime.strptime(w.birthday, '%d %b %Y') - datetime.strptime(c.birthday, '%d %b %Y')).days > 21900:
+            if (datetime.strptime(c.birthday, '%d %b %Y') - datetime.strptime(w.birthday, '%d %b %Y')).days > 21900:
                 tooOld = True
                 ind1 = family.wifeName + " " + wid
                 ind2 = c.name + " " + c.iD
                 years = "60"
                 f1 = family.iD
                 output.extend([wid, c.iD, f1])
-            if (datetime.strptime(h.birthday, '%d %b %Y') - datetime.strptime(c.birthday, '%d %b %Y')).days > 29200:
+            if (datetime.strptime(c.birthday, '%d %b %Y') - datetime.strptime(h.birthday, '%d %b %Y')).days > 29200:
                 tooOld = True
                 ind1 = family.husbName + " " + hid
                 ind2 = c.name + " " + c.iD
                 years = "80"
                 f1 = family.iD
+                output.extend([hid, c.iD, f1])
     if tooOld:
         print(KEY_WORD + ind1 + " is more than " + years + " years older than their child, " + ind2 + ". Family " + f1)
     return output
