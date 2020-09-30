@@ -45,7 +45,7 @@ class us03DeathBeforeBirthTests(unittest.TestCase):
     def testEmptyList(self):
         output = utilities.us03DeathBeforeBirth([])
         self.assertEqual(output, [])
-    
+
 
 if __name__ == '__main__':
     unittest.main()

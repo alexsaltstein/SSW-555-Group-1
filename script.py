@@ -42,10 +42,10 @@ class Family:
 
   def addChild(self,child):
     self.children.append(child)
-    
+
   def toList(self):
     return [self.iD,self.married,self.divorced,self.husbId,self.husbName,self.wifeId,self.wifeName,self.children if len(self.children) != 0 else "NA"]
-    
+
 def printIndividuals(individuals):
   table = PrettyTable()
   table.field_names = ["ID","Name","Gender","Birthday","Age","Alive","Death","Child","Spouse"]
@@ -53,7 +53,7 @@ def printIndividuals(individuals):
     table.add_row(i.toList())
   print("Individuals")
   print(table)
-  
+
 def printFamily(families):
   table = PrettyTable()
   table.field_names = ["ID","Married","Divorced","Husband ID","Husband Name","Wife ID","Wife Name","Children"]
@@ -155,13 +155,19 @@ def findat(f):
         except:
           #do nothing cause not valid tag
           pass
-      
+
 #every week we just integrate specific functions for sprint formatting is specified in sprintChecklist.pdf
 def printErrors():
+#  utils.us01DatesBeforeCurrentDate(individuals, families)
+  utils.us02BirthBeforeMarriage(individuals, families)
   utils.us03DeathBeforeBirth(individuals)
   utils.us04MarriageBeforeDivorce(families)
   utils.us07AgeOver150(individuals)
   utils.us08BirthBeforeMarriage(families, individuals)
+  utils.us09BirthBeforeDeathOfParents(families, individuals)
+  utils.us10MarriageAfter14(families, individuals)
+  utils.us11NoBigamy(families, individuals)
+  utils.us12ParentsNotTooOld(families, individuals)
 
 findat(f)
 printIndividuals(individuals)

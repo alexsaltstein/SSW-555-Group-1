@@ -6,7 +6,7 @@ import dateutil.relativedelta
 '''
     This function loops through individuals and makes sure that
     births and deaths occur before the current date. Then loops through
-    families to make sure marriage/divorces occur before the current 
+    families to make sure marriage/divorces occur before the current
     date. If there is an error, outputs information about error and
     list of id's with errors
 '''
@@ -15,7 +15,7 @@ def us01DatesBeforeCurrentDate(individuals, families):
     output = []
     now = datetime.now()
     # This needs to be fixed merp  merp
-    #now = now.strftime('%d %b %Y') 
+    #now = now.strftime('%d %b %Y')
     # the now date time is not the right type to subtract
     dateStr = now.strftime("%d %b %Y ")
     now = datetime.strptime(dateStr, '%d %b %Y')
@@ -38,7 +38,7 @@ def us01DatesBeforeCurrentDate(individuals, families):
 
 '''
     This function loops through individuals and families to make sure that
-    birth occurs before the marriage of an individual. If there is an error, 
+    birth occurs before the marriage of an individual. If there is an error,
     outputs information about error and list of id's with errors
 '''
 def us02BirthBeforeMarriage(individuals, families):
@@ -66,8 +66,8 @@ def us03DeathBeforeBirth(individuals):
             print(KEY_WORD + indi.iD + ": Died " + indi.death + " before born " + indi.birthday)
             output.append(indi.iD)
     return output
-    
-    
+
+
 '''
     This function loops through families and makes sure that
     marriage occurs before divorce and if there is an error outputs
@@ -103,7 +103,7 @@ def us07AgeOver150(individuals):
 
 '''
     This function loops through families and makes sure that
-    birth of all children occur after marriage and if there is an error, outputs 
+    birth of all children occur after marriage and if there is an error, outputs
     information about error and list of id's with errors.
 '''
 def us08BirthBeforeMarriage(families, individuals):
@@ -186,6 +186,7 @@ def us10MarriageAfter14(listOfFamilies, listOfIndividuals):
                 output.append(i.iD)
     return output
 
+<<<<<<< HEAD
 def us14MultipleBirths(families):
     KEY_WORD = "ERROR: FAMILY : US14: "
     output = []
@@ -194,3 +195,112 @@ def us14MultipleBirths(families):
             print(KEY_WORD + fam.iD + " has more than 5 children")
             output.append(fam.iD)
     return output
+=======
+
+'''
+    This function loops through families and makes sure nobody is married to two people at the same time.
+'''
+
+def us11NoBigamy(families, individuals):
+    KEY_WORD = "ERROR - US11: "
+    output = []
+    big = False
+    f1 = ""
+    f2 = ""
+    for family in families:
+        hid = family.husbId
+        wid = family.wifeId
+        families.remove(family)
+
+        for fam in families:
+            h2 = fam.husbId
+            w2 = fam.wifeId
+            if hid == h2:
+                if datetime.strptime(fam.married, '%d %b %Y') < datetime.strptime(family.married, '%d %b %Y'):
+                    w = next(w for w in individuals if w.iD == w2)
+                    if ((fam.divorced == "NA" and (w.death == "NA" or datetime.strptime(w.death, '%d %b %Y') > datetime.strptime(family.married, '%d %b %Y'))) or
+                        (fam.divorced != "NA" and datetime.strptime(fam.divorced, '%d %b %Y') > datetime.strptime(family.married, '%d %b %Y'))):
+                            big = True
+                            f1 = fam.iD
+                            f2 = family.iD
+                            ind1 = fam.husbName + " " + hid
+                            ind2 = fam.wifeName + " " + w2
+                            ind3 = family.wifeName + " " + wid
+                            output.extend([hid, w2, wid, f1, f2])
+                else:
+                    w = next(w for w in individuals if w.iD == wid)
+                    if ((family.divorced == "NA" and (w.death == "NA" or datetime.strptime(w.death, '%d %b %Y') > datetime.strptime(fam.married, '%d %b %Y'))) or
+                        (family.divorced != "NA" and datetime.strptime(family.divorced, '%d %b %Y') > datetime.strptime(fam.married, '%d %b %Y'))):
+                            big = True
+                            f1 = fam.iD
+                            f2 = family.iD
+                            ind1 = fam.husbName + " " + hid
+                            ind2 = fam.wifeName + " " + w2
+                            ind3 = family.wifeName + " " + wid
+                            output.extend([hid, w2, wid, f1, f2])
+
+            if wid == w2:
+                if datetime.strptime(fam.married, '%d %b %Y') < datetime.strptime(family.married, '%d %b %Y'):
+                    h = next(h for h in individuals if h.iD == h2)
+                    if ((fam.divorced == "NA" and (h.death == "NA" or datetime.strptime(h.death, '%d %b %Y') > datetime.strptime(family.married, '%d %b %Y'))) or
+                        (fam.divorced != "NA" and datetime.strptime(fam.divorced, '%d %b %Y') > datetime.strptime(family.married, '%d %b %Y'))):
+                            big = True
+                            f1 = fam.iD
+                            f2 = family.iD
+                            ind1 = fam.wifeName + " " + wid
+                            ind2 = fam.husbName + " " + h2
+                            ind3 = family.husbName + " " + hid
+                            output.extend([wid, h2, hid, f1, f2])
+                else:
+                    h = next(h for h in individuals if h.iD == hid)
+                    if ((family.divorced == "NA" and (h.death == "NA" or datetime.strptime(h.death, '%d %b %Y') > datetime.strptime(fam.married, '%d %b %Y'))) or
+                        (family.divorced != "NA" and datetime.strptime(family.divorced, '%d %b %Y') > datetime.strptime(fam.married, '%d %b %Y'))):
+                            big = True
+                            f1 = fam.iD
+                            f2 = family.iD
+                            ind1 = fam.wifeName + " " + wid
+                            ind2 = fam.husbName + " " + h2
+                            ind3 = family.husbName + " " + hid
+                            output.extend([wid, h2, hid, f1, f2])
+
+    if big:
+        print(KEY_WORD + ind1 + " is married to " + ind2 + " while also married to " + ind3 + ". Families " + f1 + " and " + f2)
+    return output
+
+'''
+    This function loops through families and makes sure that
+    Mother is less than 60 years older than her children and
+    father is less than 80 years older than his children.
+    if there is an error, outputs information about error and list of id's with errors.
+'''
+
+def us12ParentsNotTooOld(families, individuals):
+    KEY_WORD = "ERROR - US11: "
+    output = []
+    tooOld = False
+    fams = [f for f in families if f.children != []]
+
+    for family in fams:
+        hid = family.husbId
+        wid = family.wifeId
+        h = next(h for h in individuals if h.iD == hid)
+        w = next(w for w in individuals if w.iD == wid)
+        for child in family.children:
+            c = next(c for c in individuals if c.iD == child)
+            if (datetime.strptime(w.birthday, '%d %b %Y') - datetime.strptime(c.birthday, '%d %b %Y')).days > 21900:
+                tooOld = True
+                ind1 = fam.wifeName + " " + wid
+                ind2 = c.name + " " + c.iD
+                years = "60"
+                f1 = family.iD
+                output.extend([wid, c.iD, f])
+            if (datetime.strptime(h.birthday, '%d %b %Y') - datetime.strptime(c.birthday, '%d %b %Y')).days > 29200:
+                tooOld = True
+                ind1 = fam.husbName + " " + hid
+                ind2 = c.name + " " + c.iD
+                years = "80"
+                f1 = family.iD
+    if tooOld:
+        print(KEY_WORD + ind1 + " is more than " + years + " years older than their child, " + ind2 + ". Family " + f1)
+    return output
+>>>>>>> 351614fbf183c0cc8b3e462db3dbeeb5daea34d3
