@@ -185,3 +185,12 @@ def us10MarriageAfter14(listOfFamilies, listOfIndividuals):
                 print(KEY_WORD + i.iD + " got married under the age of 14.")
                 output.append(i.iD)
     return output
+
+def us14MultipleBirths(families):
+    KEY_WORD = "ERROR: FAMILY : US14: "
+    output = []
+    for fam in families:
+        if len(fam.children) > 4:
+            print(KEY_WORD + fam.iD + " has more than 5 children")
+            output.append(fam.iD)
+    return output
