@@ -288,6 +288,19 @@ def us12ParentsNotTooOld(families, individuals):
         print(KEY_WORD + ind1 + " is more than " + years + " years older than their child, " + ind2 + ". Family " + f1)
     return output
 
+def us13SiblingSpacing(families):
+    KEY_WORD = "ERROR: FAMILY : US13: "
+    output = []
+    for fam in families:
+        for c1 in fam.children:
+            for c2 in fam.children:
+                if c1 != c2:
+                    d = abs((c1.birthday - c2.birthday).days)
+                    if d >= 2 and d <= 30 * 8 and (not fam.iD in output):
+                        print(KEY_WORD, "Sibling Spacing is not valid")
+                        output.append(fam.iD)
+    return output
+
 def us14MultipleBirths(families):
   KEY_WORD = "ERROR: FAMILY : US14: "
   output = []
