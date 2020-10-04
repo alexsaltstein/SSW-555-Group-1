@@ -64,9 +64,9 @@ class us14MultipleBirthsTest(unittest.TestCase):
         I1.birthday = datetime(2020, 1, 1, 0, 0)
         I2 = script.Individual("I2")
         I2.birthday = datetime(2020, 1, 2, 0, 0)
-        F1.children.append(I1)
-        F1.children.append(I2)
-        output = utilities.us13SiblingSpacing([F1])
+        F1.children.append(I1.iD)
+        F1.children.append(I2.iD)
+        output = utilities.us13SiblingSpacing([F1], [I1, I2])
         self.assertEqual(output, [])
 
     def testMoreThan8Months(self):
@@ -75,9 +75,9 @@ class us14MultipleBirthsTest(unittest.TestCase):
         I1.birthday = datetime(2020, 1, 1, 0, 0)
         I2 = script.Individual("I2")
         I2.birthday = datetime(2020, 10, 1, 0, 0)
-        F1.children.append(I1)
-        F1.children.append(I2)
-        output = utilities.us13SiblingSpacing([F1])
+        F1.children.append(I1.iD)
+        F1.children.append(I2.iD)
+        output = utilities.us13SiblingSpacing([F1], [I1, I2])
         self.assertEqual(output, [])
 
     def testInvalidSpacingGeneral(self):
@@ -86,9 +86,9 @@ class us14MultipleBirthsTest(unittest.TestCase):
         I1.birthday = datetime(2020, 1, 1, 0, 0)
         I2 = script.Individual("I2")
         I2.birthday = datetime(2020, 5, 1, 0, 0)
-        F1.children.append(I1)
-        F1.children.append(I2)
-        output = utilities.us13SiblingSpacing([F1])
+        F1.children.append(I1.iD)
+        F1.children.append(I2.iD)
+        output = utilities.us13SiblingSpacing([F1], [I1, I2])
         self.assertEqual(output, ["F1"])
 
     def testInvalidSpacingLowerCornerCase(self):
@@ -97,9 +97,9 @@ class us14MultipleBirthsTest(unittest.TestCase):
         I1.birthday = datetime(2020, 1, 1, 0, 0)
         I2 = script.Individual("I2")
         I2.birthday = datetime(2020, 1, 3, 0, 0)
-        F1.children.append(I1)
-        F1.children.append(I2)
-        output = utilities.us13SiblingSpacing([F1])
+        F1.children.append(I1.iD)
+        F1.children.append(I2.iD)
+        output = utilities.us13SiblingSpacing([F1], [I1, I2])
         self.assertEqual(output, ["F1"])
 
     def testInvalidSpacingUpperCornerCase(self):
@@ -108,9 +108,9 @@ class us14MultipleBirthsTest(unittest.TestCase):
         I1.birthday = datetime(2020, 1, 1, 0, 0)
         I2 = script.Individual("I2")
         I2.birthday = datetime(2020, 8, 28, 0, 0)
-        F1.children.append(I1)
-        F1.children.append(I2)
-        output = utilities.us13SiblingSpacing([F1])
+        F1.children.append(I1.iD)
+        F1.children.append(I2.iD)
+        output = utilities.us13SiblingSpacing([F1], [I1, I2])
         self.assertEqual(output, ["F1"])
 
 if __name__ == '__main__':
