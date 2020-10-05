@@ -162,6 +162,8 @@ def printErrors():
   utils.us02BirthBeforeMarriage(individuals, families)
   utils.us03DeathBeforeBirth(individuals)
   utils.us04MarriageBeforeDivorce(families)
+  utils.us05MarriageBeforeDeath(families, individuals)
+  utils.us06DivorceBeforeDeath(families, individuals)
   utils.us07AgeOver150(individuals)
   utils.us08BirthBeforeMarriage(families, individuals)
   utils.us09BirthBeforeDeathOfParents(families, individuals)
