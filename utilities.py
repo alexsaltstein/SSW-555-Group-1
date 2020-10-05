@@ -177,7 +177,6 @@ def us07AgeOver150(individuals):
             output.append(indi.iD)
     return output
 
-
 '''
     This function loops through families and makes sure that
     birth of all children occur after marriage and if there is an error, outputs
