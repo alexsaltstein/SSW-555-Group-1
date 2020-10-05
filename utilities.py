@@ -78,6 +78,88 @@ def us04MarriageBeforeDivorce(families):
             output.append(fam.iD)
     return output
 
+'''
+    This function loops through individuals in each
+    family and ensures that any marriages occur
+    before the death of a spouse. If there are any
+    erros, this function will print out an error 
+    statement. The error statement includes 
+    information regarding the id of the family for
+    the invalid marriage, the invalid marriage date,
+    the id of the individual who died before the 
+    marriage date, and the individual's death date.
+'''
+
+def us05MarriageBeforeDeath(families, individuals):
+    KEY_WORD = "ERROR: FAMILY: US06"
+    output = []
+    for fam in families:
+        husband = fam.husbId
+        wife = fam.wifeId
+        h = next(h for h in individuals if h.iD == husband)
+        w = next(w for w in individuals if w.iD == wife) 
+        if fam.married == "NA":
+            continue
+        else:
+            if h.death == "NA":
+                h_diff = 1
+            else:
+                h_diff = datetime.strptime(h.death, '%d %b %Y') -  datetime.strptime(fam.married, '%d %b %Y')
+                h_diff = h_diff.days
+            if w.death == "NA":
+                w_diff = 1
+            else:
+                w_diff = datetime.strptime(w.death, '%d %b %Y') -  datetime.strptime(fam.married, '%d %b %Y')
+                w_diff = w_diff.days
+            if h_diff <= 0:
+                print(KEY_WORD + ' ' + fam.iD + ":" + " Married " + fam.married + " after husband's "  + '(' + h.iD + ')' + " death on " + h.death)
+                output.append(fam.iD)
+            elif w_diff <= 0:
+                print(KEY_WORD + ' ' + fam.iD + ":" + " Married " + fam.married + " after wife's "  + '(' + w.iD + ')' + " death on " + w.death)
+                output.append(fam.iD)
+
+'''
+    This function loops through individuals in each
+    family to ensure that all divorces occur before 
+    the death of either spouse. If there are any
+    erros, this function will print out an error 
+    statement. The error statement includes 
+    information regarding the id of the family for
+    the invalid divorce, the invalid divorce date, 
+    the id of the individual who died before the 
+    divorce date, and the individual's death date.
+'''
+
+    
+def us06DivorceBeforeDeath(families, individuals):
+    KEY_WORD = "ERROR: FAMILY: US06"
+    output = []
+    for fam in families:
+        husband = fam.husbId
+        wife = fam.wifeId
+        h = next(h for h in individuals if h.iD == husband)
+        w = next(w for w in individuals if w.iD == wife) 
+        if fam.divorced == "NA":
+            continue
+        else:
+            if h.death == "NA":
+                h_diff = 1
+            else:
+                h_diff = datetime.strptime(h.death, '%d %b %Y') -  datetime.strptime(fam.divorced, '%d %b %Y')
+                h_diff = h_diff.days
+            if w.death == "NA":
+                w_diff = 1
+            else:
+                w_diff = datetime.strptime(w.death, '%d %b %Y') -  datetime.strptime(fam.divorced, '%d %b %Y')
+                w_diff = w_diff.days
+            if h_diff <= 0:
+                print(KEY_WORD + ' ' + fam.iD + ":" + " Divorced " + fam.divorced + " after husband's "  + '(' + h.iD + ')' + " death on " + h.death)
+                output.append(fam.iD)
+            elif w_diff <= 0:
+                print(KEY_WORD + ' ' + fam.iD + ":" + " Divorced " + fam.divorced + " after wife's "  + '(' + w.iD + ')' + " death on " + w.death)
+                output.append(fam.iD)
+    return output 
+
 
 '''
     This function loops through individuals and makes sure that
