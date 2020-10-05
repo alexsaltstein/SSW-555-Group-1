@@ -170,7 +170,7 @@ def printErrors():
   utils.us10MarriageAfter14(families, individuals)
   utils.us11NoBigamy(families, individuals)
   utils.us12ParentsNotTooOld(families, individuals)
-  utils.us13SiblingSpacing(families)
+  utils.us13SiblingSpacing(families, individuals)
   utils.us14MultipleBirths(families)
 
 findat(f)
