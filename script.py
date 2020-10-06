@@ -12,7 +12,7 @@ Description: This python script reads the specified GEDCOM file that you want to
       <level> is the level of the input line, e.g. 0, 1, 2
       <tag> is the tag associated with the line, e.g. 'INDI', 'FAM', 'DATE', ...
       <valid?> has the value 'Y' if the tag is one of the supported tags or 'N' otherwise.  The set of all valid tags for our project is specified in the Project Overview document.
-      <arguments> is the rest of the line beyond the level and tag.
+      <arguments> is the rest of the line beyond the level and tag.   
 """
 class Individual:
   def __init__(self, iD):
