@@ -393,3 +393,39 @@ def us14MultipleBirths(families):
       print(KEY_WORD + fam.iD + " has more than 5 children")
       output.append(fam.iD)
   return output
+
+def us23UniqueNameAndBirthDate(individuals):
+    '''INSERT DESCRIPTION'''
+    KEY_WORD = "ERROR: INDIVIDUALS: US23: "
+    output = []
+    birthdays = []
+    names = []
+    bday_dupes = []
+    name_dupes = []
+    bday_checked = []
+    name_checked = []
+    for i in individuals:                                           #loops through list of individuals and grabs all birthdays and names
+        birthdays.append(i.birthday)
+        names.append(i.name)
+    for bday in birthdays:
+        if bday not in bday_checked:                                #loops through list of birthdays and checks if a birthday has been seen already
+            bday_checked.append(bday)
+        else:                                                       #if it has, appends that birthday to a list for duplicates
+            bday_dupes.append(bday)
+    '''elif name not in name_dupes:  # if it has, appends that name to a list for duplicates
+            name_dupes.append(name)'''
+    for name in names:
+        if name not in name_checked:                                #loops through list of names and checks if a name has been seen already
+            name_checked.append(name)
+        else:                                                       #if it has, appends that name to a list for duplicates
+            name_dupes.append(name)
+    '''elif name not in name_dupes:                                                       #if it has, appends that name to a list for duplicates
+            name_dupes.append(name)'''
+    if (len(bday_dupes) > 0):
+        print(KEY_WORD + "Duplicate birthday(s): " + str(bday_dupes))    #prints error messages if there are duplicates
+    if(len(name_dupes) > 0):
+        print(KEY_WORD + "Duplicate name(s): " + str(name_dupes))
+    output.extend(bday_dupes)
+    output.extend(name_dupes)
+    return output
+
