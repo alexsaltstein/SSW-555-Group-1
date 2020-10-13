@@ -94,7 +94,7 @@ class testUS09(unittest.TestCase):
 
     def testNoBirthBeforeDeathOfParents(self):
         #Test catch for birth before father's death 
-        #I1 = script.Individual("I1")
+        I1 = script.Individual("I1")
         I2 = script.Individual("I2")
         I3 = script.Individual("I3")
 
@@ -140,7 +140,7 @@ class testUS10(unittest.TestCase):
         listOfIndividuals = [I1, I2]
         output = utils.us10MarriageAfter14(listOfFamilies, listOfIndividuals)
         self.assertEqual(output, ["I1"])
-'''
+
 class testUS23(unittest.TestCase):
     def testDuplicateBirthday(self):
         I1 = script.Individual("I1")
@@ -225,7 +225,54 @@ class testUS23(unittest.TestCase):
 
         listOfIndividuals = [I1, I2]
         output = utils.us23UniqueNameAndBirthDate(listOfIndividuals)
-        self.assertEqual(output, [])
+        self.assertEqual(output, [])'''
+class testUS24(unittest.TestCase):
+    def testDuplicateSpouseNamePairs(self):
+        F1 = script.Family("F1")
+        F2 = script.Family("F2")
 
+        F1.husbName = "James"
+        F1.wifeName = "Amanda"
+        F1.married = "10 AUG 1979"
+
+        F2.husbName = "James"
+        F2.wifeName = "Amanda"
+        F2.married = "9 AUG 1979"
+
+        families = [F1, F2]
+        output = utils.us24UniqueFamiliesBySpouses(families)
+        self.assertEqual(output, [("James", "Amanda")])
+
+    def testDuplicateMarriageDates(self):
+        F1 = script.Family("F1")
+        F2 = script.Family("F2")
+
+        F1.husbName = "Jay"
+        F1.wifeName = "Ariana"
+        F1.married = "10 AUG 1979"
+
+        F2.husbName = "James"
+        F2.wifeName = "Amanda"
+        F2.married = "10 AUG 1979"
+
+        families = [F1, F2]
+        output = utils.us24UniqueFamiliesBySpouses(families)
+        self.assertEqual(output, ["10 AUG 1979"])
+
+    def testDuplicateSpouseNamesAndMarriageDates(self):
+        F1 = script.Family("F1")
+        F2 = script.Family("F2")
+
+        F1.husbName = "James"
+        F1.wifeName = "Amanda"
+        F1.married = "10 AUG 1979"
+
+        F2.husbName = "James"
+        F2.wifeName = "Amanda"
+        F2.married = "10 AUG 1979"
+
+        families = [F1, F2]
+        output = utils.us24UniqueFamiliesBySpouses(families)
+        self.assertEqual(output, [("James", "Amanda"), "10 AUG 1979"])
 if __name__ == '__main__':
     unittest.main()
