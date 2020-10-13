@@ -243,24 +243,7 @@ def makeDateTimeObject(date):
 
 
 def us09BirthBeforeDeathOfParents(listOfFamilies, listOfIndividuals):
-    '''Families have a list of children. The list contains the individual IDs for each child
-        For example: Family ID: F1 has Children with IDs: ['I1', 'I4', 'I5']
-
-        This function loops through the list of families provided through the function call and stores
-        the list of children ids, the husband id, and the wife id of one family at each iteration.
-        On the same iteration, also finds the death dates of each parent if applicable with the use
-        of a helper function called "findParentDeath". After getting this information, on the same
-        iteration the function then loops through the now collected list of child ids and finds one child's
-        birthday per iteration.  The birthday stored is then converted to datetime object format.
-        The program then checks if the husband's or wife's death date indeed exists and if so converts
-        this death date to datetime object format, and then does the
-        appropriate comparison between the stored child birthdate and the specific parent death date.
-        If the mother's death date predates the child's birthday, this is an anomaly and the program prints
-        an according error message and collects the problematic child id in a list called "output".  If the father's
-        death date predates 9 months before the child was born, this is an anomaly and the program prints
-        an according error message and collects the problematic child id in a list called "output".  Once the function
-        is finished looping through the provided list of families, it returns the output list of the problematic child ids
-        collected throughout the iterations.'''
+    '''Returns ids of children whose birthdates come before the death of their mother and/or after 9 months following the death of their father'''
     output = []
     KEY_WORD = "ERROR: INDIVIDUALS: US09: "
     for f in listOfFamilies:
