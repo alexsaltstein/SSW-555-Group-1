@@ -287,12 +287,13 @@ def us11NoBigamy(families, individuals):
     big = False
     f1 = ""
     f2 = ""
-    for family in families:
+    fams = [f for f in families]
+    for family in fams:
         hid = family.husbId
         wid = family.wifeId
-        families.remove(family)
+        fams.remove(family)
 
-        for fam in families:
+        for fam in fams:
             h2 = fam.husbId
             w2 = fam.wifeId
             if hid == h2:
@@ -428,6 +429,54 @@ def us14MultipleBirths(families):
             print(KEY_WORD + fam.iD + " has more than 5 children")
             output.append(fam.iD)
     return output
+
+'''
+    This function loops through individuals and makes sure that
+    birth occurs before death and if there is an error outputs
+    that there is a death before birth error returns list of id's with errors
+'''
+def us17NoMarriagesToDescendents(individuals, families):
+    KEY_WORD = "ERROR: INDIVIDUALS: US17: "
+    output = []
+    for fam in families:
+        husbIsMarriedToDescendent = False
+        wifeIsMarriedToDescendent = False
+        if fam.children != "NA":
+          for indi in fam.children:
+            if fam.wifeId == indi:
+              husbIsMarriedToDescendent = True
+            if fam.husbId == indi:
+              wifeIsMarriedToDescendent = True
+        if husbIsMarriedToDescendent:
+            print(KEY_WORD + fam.iD + ": husband " + fam.husbId + " is married to descendent wife " + fam.wifeId)
+            output.append(fam.husbId)
+        elif wifeIsMarriedToDescendent:
+            print(KEY_WORD + fam.iD + ": wife " + fam.wifeId + " is married to descendent husband " + fam.husbId)
+            output.append(fam.wifeId)
+    return output
+
+'''
+  This function returns the family that the individual is a child in
+'''
+def getFamOfId(id, individuals):
+  return individuals[int(id[1:])-1].child
+  
+'''
+    This function loops through individuals and makes sure that
+    birth occurs before death and if there is an error outputs
+    that there is a death before birth error returns list of id's with errors
+'''
+def us18NoSiblingMarriages(individuals, families):
+  KEY_WORD = "ERROR: FAMILY: US18: "
+  output = []
+  for fam in families:
+    husbFam = getFamOfId(fam.husbId, individuals)
+    wifeFam = getFamOfId(fam.wifeId, individuals)
+    isMarriedToSibling = husbFam != "NA" and wifeFam != "NA" and wifeFam == husbFam
+    if isMarriedToSibling:
+      print(KEY_WORD + fam.iD + ": husband " + fam.husbId + " married to sibling wife " + fam.wifeId)
+      output.append(fam.iD)
+  return output
 
 
 def findDupes(itemList):
