@@ -174,7 +174,8 @@ def printErrors():
   utils.us14MultipleBirths(families)
   utils.us17NoMarriagesToDescendents(individuals, families)
   utils.us18NoSiblingMarriages(individuals, families)
-
+  utils.us21CorrectGenderForRole(individuals, families)
+  utils.us22UniqueIDs(individuals, families)
 findat(f)
 printIndividuals(individuals)
 printFamily(families)

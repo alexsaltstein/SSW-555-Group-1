@@ -479,6 +479,45 @@ def us18NoSiblingMarriages(individuals, families):
   return output
 
 
+def us21CorrectGenderForRole(individuals, families):
+    KEY_WORD = "ERROR: FAMILY: US21: "
+    output = []
+    for fam in families:
+        husbandId = fam.husbId
+        wifeId = fam.wifeId
+        for indi in individuals:
+            incorrectHusbRole = indi.iD == husbandId and indi.gender == 'F'
+            incorrectWifeRole = indi.iD == wifeId and indi.gender == 'M'
+            if (incorrectHusbRole):
+                print(KEY_WORD + indi.iD + ": " + fam.iD +  ": Husband is Female")
+                output.append(indi.iD)
+            if (incorrectWifeRole):
+                print(KEY_WORD + indi.iD + ": " + fam.iD +  ": Wife is Male")
+                output.append(indi.iD)
+    return output
+
+def us22UniqueIDs(individuals, families):
+    KEY_WORD = "ERROR: FAMILY: US22: "
+    output = []
+    famList = []
+    indiList = []
+    for fam in families:
+        famList.append(fam.iD)
+    for indi in individuals:
+        indiList.append(indi.iD)
+    for famID in famList:
+        DupeFamId = famList.count(famID) > 1
+        if (DupeFamId):
+                print(KEY_WORD + famID + ": Duplicate Family ID")
+                output.append(famID)
+    for indiID in indiList:
+        DupeIndiId = indiList.count(indiID) > 1
+        if (DupeIndiId):
+            print(KEY_WORD + indiID + ": Duplicate Individual ID")
+            output.append(indiID)
+    return output
+    
+
 def findDupes(itemList):
     dupes = []
     checked = []
