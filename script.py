@@ -172,8 +172,11 @@ def printErrors():
   utils.us12ParentsNotTooOld(families, individuals)
   utils.us13SiblingSpacing(families, individuals)
   utils.us14MultipleBirths(families)
+  utils.us15FewerSiblings(families)
+  utils.us16MaleLastNames(individuals, families)
   utils.us17NoMarriagesToDescendents(individuals, families)
   utils.us18NoSiblingMarriages(individuals, families)
+
 
 findat(f)
 printIndividuals(individuals)
