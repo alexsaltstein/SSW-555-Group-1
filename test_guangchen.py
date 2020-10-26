@@ -119,5 +119,22 @@ class us27IncludeIndividualAgesTest(unittest.TestCase):
         I1 = script.Individual("I1")
         self.assertTrue(I1.age != None)
 
+class us28OrderSiblingsByAgeTest(unittest.TestCase):
+
+    def testUs28(self):
+        F1 = script.Family("F1")
+        I1 = script.Individual("I1")
+        I1.age = 10
+        I2 = script.Individual("I2")
+        I2.age = 15
+        F1.children.append(I1.iD)
+        F1.children.append(I2.iD)
+        families = [F1]
+        individuals = [I1, I2]
+        script.sort_sibling_by_age(families, individuals)
+        self.assertEqual(F1.children[0], "I2")
+        self.assertEqual(F1.children[1], "I1")
+
+
 if __name__ == '__main__':
     unittest.main()

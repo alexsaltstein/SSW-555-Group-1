@@ -54,7 +54,14 @@ def printIndividuals(individuals):
   print("Individuals")
   print(table)
 
-def printFamily(families):
+def sort_sibling_by_age(families, individuals):
+  for fam in families:
+    children = list(filter(lambda x: (x.iD in fam.children), individuals))
+    children = list(sorted(children, key=lambda x: x.age, reverse=True))
+    fam.children = list(map(lambda x: x.iD, children))
+
+def printFamily(families, individuals):
+  sort_sibling_by_age(families, individuals)
   table = PrettyTable()
   table.field_names = ["ID","Married","Divorced","Husband ID","Husband Name","Wife ID","Wife Name","Children"]
   for f in families:
@@ -172,5 +179,5 @@ def printErrors():
 
 findat(f)
 printIndividuals(individuals)
-printFamily(families)
+printFamily(families, individuals)
 printErrors()
