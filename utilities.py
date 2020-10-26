@@ -105,34 +105,37 @@ def us04MarriageBeforeDivorce(families):
 
 
 def us05MarriageBeforeDeath(families, individuals):
-    KEY_WORD = "ERROR: FAMILY: US06"
+    KEY_WORD = "ERROR: FAMILY: US05"
     output = []
     for fam in families:
         husband = fam.husbId
         wife = fam.wifeId
-        h = next(h for h in individuals if h.iD == husband)
-        w = next(w for w in individuals if w.iD == wife)
-        if fam.married == "NA":
-            continue
-        else:
-            if h.death == "NA":
-                h_diff = 1
+        #h = next(h for h in individuals if h.iD == husband)
+       # w = next(w for w in individuals if w.iD == wife) 
+        for indi in individuals:
+            if fam.married == "NA" or fam.married == "":
+                continue
             else:
-                h_diff = datetime.strptime(h.death, '%d %b %Y') - datetime.strptime(fam.married, '%d %b %Y')
-                h_diff = h_diff.days
-            if w.death == "NA":
-                w_diff = 1
-            else:
-                w_diff = datetime.strptime(w.death, '%d %b %Y') - datetime.strptime(fam.married, '%d %b %Y')
-                w_diff = w_diff.days
-            if h_diff <= 0:
-                print(
-                    KEY_WORD + ' ' + fam.iD + ":" + " Married " + fam.married + " after husband's " + '(' + h.iD + ')' + " death on " + h.death)
-                output.append(fam.iD)
-            elif w_diff <= 0:
-                print(
-                    KEY_WORD + ' ' + fam.iD + ":" + " Married " + fam.married + " after wife's " + '(' + w.iD + ')' + " death on " + w.death)
-                output.append(fam.iD)
+                if indi.death == "NA":
+                    continue
+                else:  
+                    if indi.gender == "M" and indi.iD in husband:
+                        diff = datetime.strptime(indi.death, '%d %b %Y') -  datetime.strptime(fam.married, '%d %b %Y')
+                        diff = diff.days
+                        if diff <= 0: # and indi == husband:
+                            print(KEY_WORD + ' ' + fam.iD + ":" + " Married " + fam.married + " after husband's "  + '(' + indi.iD + ')' + " death on " + indi.death)
+                            output.append(fam.iD)
+                        else:
+                            continue
+                    elif indi.gender == "F" and indi.iD in wife:
+                        diff = datetime.strptime(indi.death, '%d %b %Y') -  datetime.strptime(fam.married, '%d %b %Y')
+                        diff = diff.days
+                        if diff <= 0: # and indi == wife:
+                            print(KEY_WORD + ' ' + fam.iD + ":" + " Married " + fam.married + " after wife's "  + '(' + indi.iD + ')' + " death on " + indi.death)
+                            output.append(fam.iD)
+                        else: 
+                            continue
+    return output
 
 
 '''
@@ -154,30 +157,30 @@ def us06DivorceBeforeDeath(families, individuals):
     for fam in families:
         husband = fam.husbId
         wife = fam.wifeId
-        h = next(h for h in individuals if h.iD == husband)
-        w = next(w for w in individuals if w.iD == wife)
-        if fam.divorced == "NA":
-            continue
-        else:
-            if h.death == "NA":
-                h_diff = 1
+        for indi in individuals:
+            if fam.divorced == "NA" or fam.divorced == "":
+                continue
             else:
-                h_diff = datetime.strptime(h.death, '%d %b %Y') - datetime.strptime(fam.divorced, '%d %b %Y')
-                h_diff = h_diff.days
-            if w.death == "NA":
-                w_diff = 1
-            else:
-                w_diff = datetime.strptime(w.death, '%d %b %Y') - datetime.strptime(fam.divorced, '%d %b %Y')
-                w_diff = w_diff.days
-            if h_diff <= 0:
-                print(
-                    KEY_WORD + ' ' + fam.iD + ":" + " Divorced " + fam.divorced + " after husband's " + '(' + h.iD + ')' + " death on " + h.death)
-                output.append(fam.iD)
-            elif w_diff <= 0:
-                print(
-                    KEY_WORD + ' ' + fam.iD + ":" + " Divorced " + fam.divorced + " after wife's " + '(' + w.iD + ')' + " death on " + w.death)
-                output.append(fam.iD)
-    return output
+                if indi.death == "NA":
+                    continue
+                else:  
+                    if indi.gender == "M" and indi.iD in husband:
+                        diff = datetime.strptime(indi.death, '%d %b %Y') -  datetime.strptime(fam.divorced, '%d %b %Y')
+                        diff = diff.days
+                        if diff <= 0: # and indi == husband:
+                            print(KEY_WORD + ' ' + fam.iD + ":" + " Divorced " + fam.divorced + " after husband's "  + '(' + indi.iD + ')' + " death on " + indi.death)
+                            output.append(fam.iD)
+                        else:
+                            continue
+                    elif indi.gender == "F" and indi.iD in wife:
+                        diff = datetime.strptime(indi.death, '%d %b %Y') -  datetime.strptime(fam.divorced, '%d %b %Y')
+                        diff = diff.days
+                        if diff <= 0: # and indi == wife:
+                            print(KEY_WORD + ' ' + fam.iD + ":" + " Divorced " + fam.divorced + " after wife's "  + '(' + indi.iD + ')' + " death on " + indi.death)
+                            output.append(fam.iD)
+                        else: 
+                            continue
+    return output 
 
 
 '''
