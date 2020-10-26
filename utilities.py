@@ -478,6 +478,161 @@ def us18NoSiblingMarriages(individuals, families):
       output.append(fam.iD)
   return output
 
+'''
+    This function returns duplicated items from a list
+'''
+
+def findDupes(itemList):
+    dupes = []
+    checked = []
+    for i in itemList:
+        if i not in checked:
+            checked.append(i)
+        else:
+            dupes.append(i)
+    return dupes
+
+'''
+    This function gets retrieves a list of the first cousins
+'''
+
+def GetFirstCousins(families, individuals):
+    firstcousins = []
+    for indi in individuals:
+        for fam in families:
+            if indi.iD == fam.husbId or indi.iD == fam.wifeId:
+                indi_original_fam = indi.child
+                #indi_children = fam.children
+                #firstcousins.append(indi_children)
+                for fam in families:
+                    if fam.iD == indi_original_fam:
+                        indi_siblings = fam.children
+                        for sibling in indi_siblings:
+                            if sibling != str(indi.iD):
+                                for fam in families:
+                                    if sibling == str(fam.husbId) or sibling == str(fam.wifeId):
+                                        sibling_children = fam.children
+                                        for sib_kid in sibling_children:
+                                            firstcousins.append(sib_kid)
+    return firstcousins
+
+'''
+    This function finds if any cousins are married. If a married couple is found to be
+    cousins, an error statement is printed, and the family id is outputted.
+'''
+
+def us19FirstCousinsShouldNotMarry(families, individuals):
+    used = []
+    output = []
+    cousins = GetFirstCousins(families, individuals)
+    for fam in families:
+        for i in cousins:
+            for j in cousins:
+                if i != j:
+                    if (i == str(fam.husbId) and j == str(fam.wifeId)) or (i == str(fam.wifeId) and j == str(fam.husbId)):
+                        if [i, j] not in used:
+                            if [j, i] not in used:
+                                print("ERROR: FAMILY: US19: "+ fam.iD + ": " + "First cousins " + i + " and " + j + " cannot be married" )
+                                used.append([i,j])
+                                output.append(fam.iD)
+    return output
+
+'''
+    This function finds retrieves a list of the Aunts and Uncles
+'''
+
+def GetAuntsUncles(families, individuals):
+    auntsuncles = []
+    for indi in individuals:
+        for fam in families:
+            if indi.iD == fam.husbId or indi.iD == fam.wifeId:
+                indi_original_fam = indi.child
+                for fam in families:
+                    if fam.iD == indi_original_fam:
+                        indi_siblings = fam.children
+                        for sib in indi_siblings:
+                            auntsuncles.append(sib)
+                            if sib == str(fam.husbId):
+                                auntsuncles.append(fam.wifeId)
+                            if sib == str(fam.wifeId):
+                                auntsuncles.append(fam.husbId)
+    return auntsuncles
+
+'''
+    This function checks to see if a parent and child are in the same family
+'''
+
+def InFamily(parentid, childid, families):
+    for fam in families:
+        if parentid == fam.husbId or parentid == fam.wifeId:
+            if childid in fam.children:
+                return True
+            else:
+                return False
+
+'''
+    This function checks to see if two individuals are cousins
+'''
+def IsCousin(indiv1, indiv2, individuals, families):
+    parents_both_indivs = []
+    family_of_parents = []
+    # filter through to get parents of individual # 1
+    for indi in individuals:
+        if indiv1 == indi.iD:
+            indiv1_fam = indi.child
+            for fam in families:
+                if indiv1_fam == fam.iD:
+                    parents_both_indivs.append(fam.husbId)
+                    parents_both_indivs.append(fam.wifeId)
+    # filter through to get parents of individual # 2
+    for indi in individuals:
+        if indiv2 == indi.iD:
+            indiv2_fam = indi.child
+            for fam in families:
+                if indiv2_fam == fam.iD:
+                    parents_both_indivs.append(fam.husbId)
+                    parents_both_indivs.append(fam.wifeId)
+    # Get the families for each parent
+    for parent in parents_both_indivs:
+        for indi in individuals:
+            if parent == indi.iD:
+                family_of_parents.append(indi.child)
+    # Check if duplicates exists in list of the parents' families
+    dupes = findDupes(family_of_parents) 
+    # If the list contains two of the same families, we know that they are cousins
+    if "NA" in dupes and len(dupes) == 1:
+        # sometimes NA might appear if parent's family was not put in
+        # if NA is only case in dupes, we can identify it as False
+        return False
+    elif len(dupes) == 0:
+        return False
+    else:
+        return True
+
+'''
+    This function finds if any aunt/uncle is married to their niece/nephew. 
+    If a married couple is found to contain an aunt/uncle and niece/nephew,
+    an error statement is printed, and the family id is outputted.
+'''
+
+def us20AuntsandUncles(families, individuals):
+    used = []
+    output = []
+    auntsuncles = GetAuntsUncles(families, individuals)
+    cousins = GetFirstCousins(families, individuals)
+    for fam in families:
+        for au in auntsuncles:
+            for c in cousins:
+                if InFamily(au, c, families) == False:
+                    if (au == str(fam.wifeId) and c == str(fam.husbId)) or (au == str(fam.husbId) and c == str(fam.wifeId)):
+                        if IsCousin(au, c, individuals, families) == False:
+                            if [au, c] not in used:
+                                if [c, au] not in used:
+                                    print("ERROR: FAMILY: US20: "+ fam.iD + ": " + "Aunt/Uncle "  + au + " cannot be married to niece/nephew " + c)
+                                    used.append([au, c])
+                                    output.append(fam.iD)
+    return output
+   
 
 def us21CorrectGenderForRole(individuals, families):
     KEY_WORD = "ERROR: FAMILY: US21: "
@@ -516,17 +671,6 @@ def us22UniqueIDs(individuals, families):
             print(KEY_WORD + indiID + ": Duplicate Individual ID")
             output.append(indiID)
     return output
-    
-
-def findDupes(itemList):
-    dupes = []
-    checked = []
-    for i in itemList:
-        if i not in checked:
-            checked.append(i)
-        else:
-            dupes.append(i)
-    return dupes
 
 
 def us23UniqueNameAndBirthDate(individuals):
