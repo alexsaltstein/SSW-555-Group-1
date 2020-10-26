@@ -298,7 +298,7 @@ def us13SiblingSpacing(families, individuals):
                     c1 = [x for x in individuals if x.iD == id1][0]
                     c2 = [x for x in individuals if x.iD == id2][0]
                     d = abs((c1.birthday - c2.birthday).days)
-                    if d >= 2 and d <= 30 * 8 and (not fam.iD in output):
+                    if d >= 2 and d <= 240 and (not fam.iD in output):
                         print(KEY_WORD, "Sibling Spacing is not valid")
                         output.append(fam.iD)
     return output

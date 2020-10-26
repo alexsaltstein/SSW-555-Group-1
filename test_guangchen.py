@@ -113,5 +113,11 @@ class us14MultipleBirthsTest(unittest.TestCase):
         output = utilities.us13SiblingSpacing([F1], [I1, I2])
         self.assertEqual(output, ["F1"])
 
+class us27IncludeIndividualAgesTest(unittest.TestCase):
+
+    def testUs27(self):
+        I1 = script.Individual("I1")
+        self.assertTrue(I1.age != None)
+
 if __name__ == '__main__':
     unittest.main()
