@@ -106,6 +106,45 @@ class us11NoBigamy(unittest.TestCase):
     #     output = utilities.us12ParentsNotTooOld([F1, F2], [I1, I2, I3, I4, I5])
     #     self.assertEqual(output, ['I3', 'I4', 'F2', 'I3', 'I5', 'F2'])
 
+    def testUS25(self):
+        I1 = script.Individual("I1")
+        I2 = script.Individual("I2")
+        I3 = script.Individual("I3")
+        F1 = script.Family("F1")
+        F2 = script.Family("F2")
+        F1.husbId = "I1"
+        F1.wifeId = "I2"
+        F2.husbId = "I1"
+        F2.wifeId = "I3"
+        I1.birthday = "1 NOV 1985"
+        I2.birthday = "1 NOV 1985"
+        I3.birthday = "1 NOV 1985"
+        I1.name = "bobby"
+        I2.name = "bobby"
+        I3.name = "bobby"
+        I2.death = "2 JAN 2010"
+        F2.children = ["I1", "I3"]
+        output = utilities.us25UniqueFirstNames([F1,F2], [I1, I2, I3])
+        self.assertEqual(output, ['I1', 'I3', 'F2'])
+
+    def testUS26(self):
+        I1 = script.Individual("I1")
+        I2 = script.Individual("I2")
+        I3 = script.Individual("I3")
+        I4 = script.Individual("I4")
+        F1 = script.Family("F1")
+        F2 = script.Family("F2")
+        F1.husbId = "I1"
+        F1.wifeId = "I2"
+        I1.spouse = "I3"
+        I2.spouse = "I1"
+        I1.child = ["I4"]
+        I2.child = ["I4"]
+        I4.name = "bobby"
+        F1.children = ["I4"]
+        output = utilities.us26CorrespondingEntries([F1], [I1, I2, I3, I4])
+        self.assertEqual(output, ['I2', 'I1', 'F1', 'I1', 'I3', 'F1'])
+
 
 if __name__ == '__main__':
     unittest.main()
