@@ -59,6 +59,20 @@ class us02BirthBeforeMarriage(unittest.TestCase):
         output = utilities.us02BirthBeforeMarriage([],[])
         self.assertEqual(output, [])
     
+    def testMoreThanFifteenKids(self):
+        F1 = script.Family("F1")
+        F1.children = "I1, I2, I3, I4, I5, I6, I7, I8, I9, I10, I11, I12, I13, I14, I15, I16"
+        output = utilities.us15FewerSiblings(F1)
+        self.assertEqual(output, [])
+
+    def testMaleLastNamesInvalid(self):
+        F1 = script.Family("F1")
+        I1 = script.Individual("I1")
+        F1.husbname = "John Smith"
+        F1.children = ["I1"]
+        I1.name = "Joe Michael"
+        output = utilities.us16MaleLastNames(I1, F1)
+        self.assertEqual(output, [])
 
 if __name__ == '__main__':
     unittest.main()
