@@ -226,7 +226,7 @@ class testUS23(unittest.TestCase):
         listOfIndividuals = [I1, I2]
         output = utils.us23UniqueNameAndBirthDate(listOfIndividuals)
         self.assertEqual(output, [])'''
-class testUS24(unittest.TestCase):
+'''class testUS24(unittest.TestCase):
     def testDuplicateSpouseNamePairs(self):
         F1 = script.Family("F1")
         F2 = script.Family("F2")
@@ -273,6 +273,204 @@ class testUS24(unittest.TestCase):
 
         families = [F1, F2]
         output = utils.us24UniqueFamiliesBySpouses(families)
-        self.assertEqual(output, [("James", "Amanda"), "10 AUG 1979"])
+        self.assertEqual(output, [("James", "Amanda"), "10 AUG 1979"])'''
+
+'''class testUS37(unittest.TestCase):
+    def testDeadHusband(self):
+        I1 = script.Individual("I1")
+        I2 = script.Individual("I2")
+        I3 = script.Individual("I3")
+
+        I1.name = "James"
+        I1.death = "4 OCT 2020"
+        I1.alive = False
+
+        I2.name = "Amanda"
+
+        I3.name = "Brad"
+
+        F1 = script.Family("F1")
+
+        F1.husbName = "James"
+        F1.husbId = "I1"
+        F1.wifeName = "Amanda"
+        F1.wifeId = "I2"
+        F1.married = "10 AUG 1979"
+        F1.children = [I3]
+        families = [F1]
+        individuals = [I1, I2, I3]
+        output = utils.us37ListRecentSurvivors(individuals, families)
+        self.assertEqual(output, [["Amanda", ["Brad"]]])
+
+    def testDeadWife(self):
+        I1 = script.Individual("I1")
+        I2 = script.Individual("I2")
+        I3 = script.Individual("I3")
+
+        I1.name = "James"
+
+        I2.name = "Amanda"
+        I2.death = "1 NOV 2020"
+        I2.alive = False
+
+        I3.name = "Brad"
+
+        F1 = script.Family("F1")
+
+        F1.husbName = "James"
+        F1.husbId = "I1"
+        F1.wifeName = "Amanda"
+        F1.wifeId = "I2"
+        F1.married = "10 AUG 1979"
+        F1.children = [I3]
+        families = [F1]
+        individuals = [I1, I2, I3]
+        output = utils.us37ListRecentSurvivors(individuals, families)
+        self.assertEqual(output, [["James", ["Brad"]]])
+
+    def testMultipleSpouses(self):
+        I1 = script.Individual("I1")
+        I2 = script.Individual("I2")
+        I3 = script.Individual("I3")
+        I4 = script.Individual("I4")
+
+        I4.name = "Lauren"
+
+        I1.name = "James"
+
+        I2.name = "Amanda"
+        I2.death = "1 NOV 2020"
+        I2.alive = False
+
+        I3.name = "Brad"
+
+        F1 = script.Family("F1")
+
+        F1.husbName = "James"
+        F1.husbId = "I1"
+        F1.wifeName = "Amanda"
+        F1.wifeId = "I2"
+        F1.married = "10 AUG 1979"
+        F1.children = [I3]
+
+        F2 = script.Family("F1")
+
+        F2.husbName = "Lauren"
+        F2.husbId = "I4"
+        F2.wifeName = "Amanda"
+        F2.wifeId = "I2"
+        F2.married = "10 AUG 1969"
+        F2.divorced = "10 AUG 1975"
+
+        families = [F1, F2]
+        individuals = [I1, I2, I3, I4]
+
+
+        output = utils.us37ListRecentSurvivors(individuals, families)
+        self.assertEqual(output, [["James", ["Brad"]], ['Lauren', []]])
+
+    def testMultipleChildren(self):
+        I1 = script.Individual("I1")
+        I2 = script.Individual("I2")
+        I3 = script.Individual("I3")
+        I4 = script.Individual("I4")
+
+        I4.name = "Jon"
+
+        I1.name = "James"
+
+        I2.name = "Amanda"
+        I2.death = "1 NOV 2020"
+        I2.alive = False
+
+        I3.name = "Brad"
+
+        F1 = script.Family("F1")
+
+        F1.husbName = "James"
+        F1.husbId = "I1"
+        F1.wifeName = "Amanda"
+        F1.wifeId = "I2"
+        F1.married = "10 AUG 1979"
+        F1.children = [I3, I4]
+        families = [F1]
+        individuals = [I1, I2, I3, I4]
+        output = utils.us37ListRecentSurvivors(individuals, families)
+        self.assertEqual(output, [["James", ["Brad", "Jon"]]])
+
+    def testMultipleChildrenWithDifferentSpouses(self):
+        I1 = script.Individual("I1")
+        I2 = script.Individual("I2")
+        I3 = script.Individual("I3")
+        I4 = script.Individual("I4")
+        I5 = script.Individual("I5")
+
+        I5.name = "Jon"
+
+        I4.name = "Lauren"
+
+        I1.name = "James"
+
+        I2.name = "Amanda"
+        I2.death = "1 NOV 2020"
+        I2.alive = False
+
+        I3.name = "Brad"
+
+        F1 = script.Family("F1")
+
+        F1.husbName = "James"
+        F1.husbId = "I1"
+        F1.wifeName = "Amanda"
+        F1.wifeId = "I2"
+        F1.married = "10 AUG 1979"
+        F1.children = [I3]
+
+        F2 = script.Family("F1")
+
+        F2.husbName = "Lauren"
+        F2.husbId = "I4"
+        F2.wifeName = "Amanda"
+        F2.wifeId = "I2"
+        F2.married = "10 AUG 1969"
+        F2.divorced = "10 AUG 1975"
+        F2.children = [I5]
+
+        families = [F1, F2]
+        individuals = [I1, I2, I3, I4, I5]
+
+
+        output = utils.us37ListRecentSurvivors(individuals, families)
+        self.assertEqual(output, [["James", ["Brad"]], ['Lauren', ["Jon"]]])'''
+class testUS38(unittest.TestCase):
+    def testUpcomingBirthday(self):
+        I1 = script.Individual("I1")
+
+
+        I1.birthday = "6 DEC 2020"
+        I1.name = "James"
+
+        individuals = [I1]
+        output = utils.us38ListUpcomingBirthdays(individuals)
+        self.assertEqual(output, ["James"])
+
+    def testUpcomingBirthdays(self):
+        I1 = script.Individual("I1")
+        I2 = script.Individual("I2")
+        I3 = script.Individual("I3")
+
+        I1.birthday = "6 DEC 2020"
+        I1.name = "James"
+
+        I2.birthday = "6 NOV 2020"
+        I2.name = "Amanda"
+
+        I3.birthday = "3 DEC 2020"
+        I3.name = "Taylor"
+
+        individuals = [I1, I2, I3]
+        output = utils.us38ListUpcomingBirthdays(individuals)
+        self.assertEqual(output, ["James", "Amanda", "Taylor"])
+
 if __name__ == '__main__':
     unittest.main()
