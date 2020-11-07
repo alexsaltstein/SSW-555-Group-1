@@ -569,81 +569,6 @@ def us24UniqueFamiliesBySpouses(families):
     output.extend(marriageDupes)
     return output
 
-<<<<<<< HEAD
-def getChildrenNames(childrenIds, individuals):
-    childrenNames = []
-    for c in childrenIds:
-        for i in individuals:
-            if c.iD == i.iD:
-                childrenNames.append(i.name)
-    return childrenNames
-
-def us31ListLivingSingle(individuals, families):
-  '''Prints out a list of all living people in a GEDCOM file over 30 and who have never been married'''
-  KEY_WORD = "LIST: LIVING PEOPLE: "
-  output = []
-  married = []
-  for f in families:
-    married.append(f.husbId)
-    married.append(f.wifeId)
-  for i in individuals:
-    if i.alive and int(i.age) >= 30 and i.iD not in married:
-      output.append(i.iD)
-  print(KEY_WORD)
-  if len(output) > 0:
-    for id in output:
-      print("\t" + id)
-  return output
-
-def us32ListMultipleBirths(individuals):
-  '''Prints out a list of all multiple births in a GEDCOM file'''
-  KEY_WORD = "LIST: MULTIPLE BIRTHS: "
-  output = []
-  for i in individuals:
-    for i2 in individuals:
-      if i.iD != i2.iD and i.birthday == i2.birthday:
-        if i.iD not in output:
-          output.append(i.iD)
-        if i2.iD not in output:
-          output.append(i2.iD)
-  if len(output) > 0:
-    print(KEY_WORD)
-    for id in output:
-      print("\t" + id)
-  return output
-  
-def us37ListRecentSurvivors(individuals, families):
-    '''Prints out the recent survivors (spouses and descendants) of individuals who died in the last 30 days'''
-    KEY_WORD = "ERROR: INDIVIDUALS: US37: "
-    output = []
-    for i in individuals:
-        if not i.alive and (datetime.today() - makeDateTimeObject(i.death)).days <= 30:
-            for f in families:
-                if i.iD == f.husbId:
-                    descendantNames = getChildrenNames(f.children, individuals)
-                    print("Recent survivors of " + i.name + "'s untimely death: ")
-                    print("\tSpouse of " + i.name + ": " + f.wifeName)
-                    print("\tDescendants of " + i.name + " with " + f.wifeName + ": " + str(descendantNames) + "\n")
-                    output.append([f.wifeName, descendantNames])
-                if i.iD == f.wifeId:
-                    descendantNames = getChildrenNames(f.children, individuals)
-                    print("Recent survivors of " + i.name + "'s untimely death:")
-                    print("\tSpouse of " + i.name + ": " + f.husbName)
-                    print("\tDescendants of " + i.name + " with " + f.husbName + ": " + str(descendantNames) + "\n")
-                    output.append([f.husbName, descendantNames])
-    return output
-
-def us38ListUpcomingBirthdays(individuals):
-    '''Prints out a list of all living people in a GEDCOM file whose birthdays occur within the next 30 days'''
-    KEY_WORD = "ERROR: INDIVIDUALS: US38: "
-    output = []
-    for i in individuals:
-        if ((makeDateTimeObject(i.birthday) - datetime.today()).days <= 30) and ((makeDateTimeObject(i.birthday) - datetime.today()).days >= 0):
-            output.append(i.name)
-    print("Upcoming Birthdays:")
-    for name in output:
-        print("\t" + name)
-=======
 def us25UniqueFirstNames(families, individuals):
     '''Checks for multiple children in the same family with the same first name and birthday'''
     KEY_WORD = "ERROR - US25: "
@@ -705,6 +630,77 @@ def us26CorrespondingEntries(families, individuals):
                 print(KEY_WORD + ind.name + " (" + ind.iD + ") does not appear in one or more of their mother's (" + w.iD + ") child record.")
                 output.extend([ind.iD, w.iD, f.iD])
 
+def getChildrenNames(childrenIds, individuals):
+    childrenNames = []
+    for c in childrenIds:
+        for i in individuals:
+            if c.iD == i.iD:
+                childrenNames.append(i.name)
+    return childrenNames
 
->>>>>>> 6175dab... Implemented and added tests for User Stories 25 and 26
+def us31ListLivingSingle(individuals, families):
+  '''Prints out a list of all living people in a GEDCOM file over 30 and who have never been married'''
+  KEY_WORD = "LIST: LIVING PEOPLE: "
+  output = []
+  married = []
+  for f in families:
+    married.append(f.husbId)
+    married.append(f.wifeId)
+  for i in individuals:
+    if i.alive and int(i.age) >= 30 and i.iD not in married:
+      output.append(i.iD)
+  print(KEY_WORD)
+  if len(output) > 0:
+    for id in output:
+      print("\t" + id)
+  return output
+
+def us32ListMultipleBirths(individuals):
+  '''Prints out a list of all multiple births in a GEDCOM file'''
+  KEY_WORD = "LIST: MULTIPLE BIRTHS: "
+  output = []
+  for i in individuals:
+    for i2 in individuals:
+      if i.iD != i2.iD and i.birthday == i2.birthday:
+        if i.iD not in output:
+          output.append(i.iD)
+        if i2.iD not in output:
+          output.append(i2.iD)
+  if len(output) > 0:
+    print(KEY_WORD)
+    for id in output:
+      print("\t" + id)
+  return output
+
+def us37ListRecentSurvivors(individuals, families):
+    '''Prints out the recent survivors (spouses and descendants) of individuals who died in the last 30 days'''
+    KEY_WORD = "ERROR: INDIVIDUALS: US37: "
+    output = []
+    for i in individuals:
+        if not i.alive and (datetime.today() - makeDateTimeObject(i.death)).days <= 30:
+            for f in families:
+                if i.iD == f.husbId:
+                    descendantNames = getChildrenNames(f.children, individuals)
+                    print("Recent survivors of " + i.name + "'s untimely death: ")
+                    print("\tSpouse of " + i.name + ": " + f.wifeName)
+                    print("\tDescendants of " + i.name + " with " + f.wifeName + ": " + str(descendantNames) + "\n")
+                    output.append([f.wifeName, descendantNames])
+                if i.iD == f.wifeId:
+                    descendantNames = getChildrenNames(f.children, individuals)
+                    print("Recent survivors of " + i.name + "'s untimely death:")
+                    print("\tSpouse of " + i.name + ": " + f.husbName)
+                    print("\tDescendants of " + i.name + " with " + f.husbName + ": " + str(descendantNames) + "\n")
+                    output.append([f.husbName, descendantNames])
+    return output
+
+def us38ListUpcomingBirthdays(individuals):
+    '''Prints out a list of all living people in a GEDCOM file whose birthdays occur within the next 30 days'''
+    KEY_WORD = "ERROR: INDIVIDUALS: US38: "
+    output = []
+    for i in individuals:
+        if ((makeDateTimeObject(i.birthday) - datetime.today()).days <= 30) and ((makeDateTimeObject(i.birthday) - datetime.today()).days >= 0):
+            output.append(i.name)
+    print("Upcoming Birthdays:")
+    for name in output:
+        print("\t" + name)
     return output
