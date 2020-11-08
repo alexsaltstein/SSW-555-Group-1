@@ -189,7 +189,9 @@ def us06DivorceBeforeDeath(families, individuals):
 
 
 def us07AgeOver150(individuals):
-    KEY_WORD = "ERROR: INDIVIDUALS: US07: "
+    for i in individuals:
+        print(i.age)
+    '''KEY_WORD = "ERROR: INDIVIDUALS: US07: "
     output = []
     for indi in individuals:
         isOver150 = indi.age != '' and int(indi.age) > 149
@@ -197,7 +199,7 @@ def us07AgeOver150(individuals):
             print(KEY_WORD + indi.iD + ": Age " + str(indi.age) + ", over 150")
             output.append(indi.iD)
     return output
-
+'''
 
 '''
     This function loops through families and makes sure that
@@ -576,6 +578,41 @@ def getChildrenNames(childrenIds, individuals):
             if c.iD == i.iD:
                 childrenNames.append(i.name)
     return childrenNames
+'''def us21CorrectGenderForRole(individuals, families):
+    KEY_WORD = "ERROR: FAMILY: US21: "
+    output = []
+    for fam in families:
+        husbandId = fam.husbId
+        wifeId = fam.wifeId
+        for indi in individuals:
+            incorrectHusbRole = indi.iD == husbandId and indi.gender == 'F'
+            incorrectWifeRole = indi.iD == wifeId and indi.gender == 'M'
+            if (incorrectHusbRole):
+                print(KEY_WORD + indi.iD + ": " + fam.iD +  ": Husband is Female")
+                output.append(indi.iD)
+            if (incorrectWifeRole):
+                print(KEY_WORD + indi.iD + ": " + fam.iD +  ": Wife is Male")
+                output.append(indi.iD)
+    return output'''
+    # List all individuals born in the last 30 days
+def us35ListRecentBirths(individuals, families):
+    KEY_WORD = "ERROR: INDIVIDUALS: US35: "
+    output = []
+    for i in individuals:
+        if (datetime.today() - makeDateTimeObject(i.birthday)).days <=30:
+            print(KEY_WORD + i.iD + ": " + "Born in the last 30 days")
+            output.append(i.iD)
+    return output
+
+    # List all individuals who have died in the last 30 days
+def us36ListRecentDeaths(individuals, families):
+    KEY_WORD = "ERROR: INDIVIDUALS: US36: "
+    output = []
+    for i in individuals:
+        if i.alive==False and (datetime.today() - makeDateTimeObject(i.death)).days <=30:
+            print(KEY_WORD + i.iD + ": " + "Died in the last 30 days")
+            output.append(i.iD)
+    return output
 
 def us37ListRecentSurvivors(individuals, families):
     '''Prints out the recent survivors (spouses and descendants) of individuals who died in the last 30 days'''

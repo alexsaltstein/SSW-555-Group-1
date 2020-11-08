@@ -105,7 +105,11 @@ def findat(f):
             birthday = " ".join(linelist[2:])
             datetime_object = datetime.strptime(birthday, '%d %b %Y')
             individuals[len(individuals)-1].birthday = birthday
-            individuals[len(individuals)-1].age = str((datetime.now() - datetime_object)/365).split(" ")[0]
+            individuals[len(individuals)-1].age = str((datetime.now() - datetime_object)).split(" ")[0]
+            if int(individuals[len(individuals)-1].age) < 365:
+              individuals[len(individuals)-1].age = '0'
+            else:
+              individuals[len(individuals)-1].age = str(int(int(individuals[len(individuals)-1].age)/365))
             findingBirt = False
           if findingDeat:
             individuals[len(individuals)-1].death = " ".join(linelist[2:])
@@ -176,6 +180,8 @@ def printErrors():
   utils.us18NoSiblingMarriages(individuals, families)
   utils.us21CorrectGenderForRole(individuals, families)
   utils.us22UniqueIDs(individuals, families)
+  utils.us35ListRecentBirths(individuals, families)
+  utils.us36ListRecentDeaths(individuals, families)
 findat(f)
 printIndividuals(individuals)
 printFamily(families)
