@@ -614,6 +614,40 @@ def us36ListRecentDeaths(individuals, families):
             output.append(i.iD)
     return output
 
+def us31ListLivingSingle(individuals, families):
+  '''Prints out a list of all living people in a GEDCOM file over 30 and who have never been married'''
+  KEY_WORD = "LIST: LIVING PEOPLE: "
+  output = []
+  married = []
+  for f in families:
+    married.append(f.husbId)
+    married.append(f.wifeId)
+  for i in individuals:
+    if i.alive and int(i.age) >= 30 and i.iD not in married:
+      output.append(i.iD)
+  print(KEY_WORD)
+  if len(output) > 0:
+    for id in output:
+      print("\t" + id)
+  return output
+
+def us32ListMultipleBirths(individuals):
+  '''Prints out a list of all multiple births in a GEDCOM file'''
+  KEY_WORD = "LIST: MULTIPLE BIRTHS: "
+  output = []
+  for i in individuals:
+    for i2 in individuals:
+      if i.iD != i2.iD and i.birthday == i2.birthday:
+        if i.iD not in output:
+          output.append(i.iD)
+        if i2.iD not in output:
+          output.append(i2.iD)
+  if len(output) > 0:
+    print(KEY_WORD)
+    for id in output:
+      print("\t" + id)
+  return output
+  
 def us37ListRecentSurvivors(individuals, families):
     '''Prints out the recent survivors (spouses and descendants) of individuals who died in the last 30 days'''
     KEY_WORD = "ERROR: INDIVIDUALS: US37: "

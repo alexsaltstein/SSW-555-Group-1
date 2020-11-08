@@ -180,6 +180,8 @@ def printErrors():
   utils.us18NoSiblingMarriages(individuals, families)
   utils.us21CorrectGenderForRole(individuals, families)
   utils.us22UniqueIDs(individuals, families)
+  utils.us31ListLivingSingle(individuals, families)
+  utils.us32ListMultipleBirths(individuals)
   utils.us35ListRecentBirths(individuals, families)
   utils.us36ListRecentDeaths(individuals, families)
 findat(f)
