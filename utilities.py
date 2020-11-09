@@ -1,6 +1,7 @@
 # This is the utilities script for how we are going to implement stories for each sprint
 from datetime import datetime
 from datetime import date
+from datetime import timedelta
 import dateutil.relativedelta
 from collections import Counter
 
@@ -629,6 +630,7 @@ def us26CorrespondingEntries(families, individuals):
             if ind.iD not in w.child:
                 print(KEY_WORD + ind.name + " (" + ind.iD + ") does not appear in one or more of their mother's (" + w.iD + ") child record.")
                 output.extend([ind.iD, w.iD, f.iD])
+    return output
 
 def getChildrenNames(childrenIds, individuals):
     childrenNames = []
@@ -704,3 +706,37 @@ def us38ListUpcomingBirthdays(individuals):
     for name in output:
         print("\t" + name)
     return output
+
+def us39ListUpcomingAnniversaries(families, individuals):
+    '''List all anniversaries of living couples that are coming up within 30 days'''
+    KEY_WORD = "List - US39: "
+    output = []
+    fams = [f for f in families if f.married]
+    today = datetime.now()
+    month = today + timedelta(days=30)
+    for fam in fams:
+        h = next(h for h in individuals if h.iD == fam.husbId)
+        w = next(w for w in individuals if w.iD == fam.wifeId)
+        anniv = datetime.strptime(fam.married, '%d %b %Y')
+        if today.month == 12 and today.day > 1:
+            if anniv.month == 12:
+                anniv = anniv.replace(year = today.year)
+                if h.alive and w.alive and (today <= anniv <= month):
+                    output.append([h.iD, w.iD, fam.iD])
+                    print(KEY_WORD + h.name + " and " + w.name + " have their anniversary coming up! Family " + fam.iD)
+            elif anniv.month == 1:
+                anniv = anniv.replace(year = month.year)
+                if h.alive and w.alive and (anniv <= month):
+                    output.append([h.iD, w.iD, fam.iD])
+                    print(KEY_WORD + h.name + " and " + w.name + " have their anniversary coming up! Family " + fam.iD)
+        else:
+            anniv = anniv.replace(year = today.year)
+            if h.alive and w.alive and (today <= anniv <= month):
+                output.append([h.iD, w.iD, fam.iD])
+                print(KEY_WORD + h.name + " and " + w.name + " have their anniversary coming up! Family " + fam.iD)
+    return output
+
+def us40(families, individuals):
+    '''List line numbers from GEDCOM source file when reporting errors'''
+    KEY_WORD = "US40: "
+    return []

@@ -145,6 +145,34 @@ class us11NoBigamy(unittest.TestCase):
         output = utilities.us26CorrespondingEntries([F1], [I1, I2, I3, I4])
         self.assertEqual(output, ['I2', 'I1', 'F1', 'I1', 'I3', 'F1'])
 
+    def testUS39(self):
+        # as of 11/8/2020
+        I1 = script.Individual("I1")
+        I2 = script.Individual("I2")
+        I3 = script.Individual("I3")
+        I4 = script.Individual("I4")
+        I5 = script.Individual("I5")
+        I6 = script.Individual("I6")
+        F1 = script.Family("F1")
+        F2 = script.Family("F2")
+        F3 = script.Family("F3")
+        F1.husbId = "I1"
+        F1.wifeId = "I2"
+        F2.husbId = "I3"
+        F2.wifeId = "I4"
+        F3.husbId = "I5"
+        F3.wifeId = "I6"
+        F1.married = "21 NOV 1985"
+        F2.married = "8 NOV 2015"
+        F3.married = "8 DEC 2015"
+        I1.name = "bobby"
+        I2.name = "barbie"
+        I3.name = "barney"
+        I4.name = "bonnie"
+        I5.name = "bartelby"
+        I6.name = "bethany"
+        output = utilities.us39ListUpcomingAnniversaries([F1, F2, F3], [I1, I2, I3, I4, I5, I6])
+        self.assertEqual(output, [['I1', 'I2', 'F1'], ['I5', 'I6', 'F3']])
 
 if __name__ == '__main__':
     unittest.main()
