@@ -134,6 +134,7 @@ def us05MarriageBeforeDeath(families, individuals):
                 print(
                     KEY_WORD + ' ' + fam.iD + ":" + " Married " + fam.married + " after wife's " + '(' + w.iD + ')' + " death on " + w.death)
                 output.append(fam.iD)
+    return output
 
 
 '''
@@ -735,8 +736,3 @@ def us39ListUpcomingAnniversaries(families, individuals):
                 output.append([h.iD, w.iD, fam.iD])
                 print(KEY_WORD + h.name + " and " + w.name + " have their anniversary coming up! Family " + fam.iD)
     return output
-
-def us40(families, individuals):
-    '''List line numbers from GEDCOM source file when reporting errors'''
-    KEY_WORD = "US40: "
-    return []

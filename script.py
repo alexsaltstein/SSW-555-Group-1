@@ -12,8 +12,10 @@ Description: This python script reads the specified GEDCOM file that you want to
       <level> is the level of the input line, e.g. 0, 1, 2
       <tag> is the tag associated with the line, e.g. 'INDI', 'FAM', 'DATE', ...
       <valid?> has the value 'Y' if the tag is one of the supported tags or 'N' otherwise.  The set of all valid tags for our project is specified in the Project Overview document.
-      <arguments> is the rest of the line beyond the level and tag.   
+      <arguments> is the rest of the line beyond the level and tag.
 """
+GEDPATH = "Miriam-family.ged"
+
 class Individual:
   def __init__(self, iD):
     self.iD = iD
@@ -65,7 +67,7 @@ def printFamily(families):
 #beginning of script
 validTags = ["INDI","NAME","SEX","BIRT","DEAT","FAMC","FAMS","FAM","MARR","HUSB","WIFE","CHIL","DIV","DATE","HEAD","TRLR","NOTE"]
 
-f = open("Miriam-family.ged", "r")
+f = open(GEDPATH, "r")
 
 individuals = []
 families = []
@@ -156,28 +158,70 @@ def findat(f):
           #do nothing cause not valid tag
           pass
 
+def us40(input):
+    '''List line numbers from GEDCOM source file when reporting errors'''
+    KEY_WORD = "US40: ERROR in GEDCOM file on line "
+    ged = open(GEDPATH, 'r')
+    lnum = 0
+    id_lst = []
+    for sub in input:
+        if isinstance(sub, list):
+            for id in sub:
+                id_lst.append(id)
+        else:
+            id_lst.append(sub)
+
+    for line in ged:
+        ls = line.split()
+        if len(ls) > 2:
+            IFtag = ls[2].strip()
+        else:
+            IFtag = ''
+        if IFtag == 'INDI' or IFtag == 'FAM':
+            tag = IFtag
+            id = ls[1].strip().strip('@')
+            if id in id_lst:
+                print(KEY_WORD + str(lnum))
+        lnum += 1
+
 #every week we just integrate specific functions for sprint formatting is specified in sprintChecklist.pdf
 def printErrors():
-  utils.us01DatesBeforeCurrentDate(individuals, families)
-  utils.us02BirthBeforeMarriage(individuals, families)
-  utils.us03DeathBeforeBirth(individuals)
-  utils.us04MarriageBeforeDivorce(families)
-  utils.us05MarriageBeforeDeath(families, individuals)
-  utils.us06DivorceBeforeDeath(families, individuals)
-  utils.us07AgeOver150(individuals)
-  utils.us08BirthBeforeMarriage(families, individuals)
-  utils.us09BirthBeforeDeathOfParents(families, individuals)
-  utils.us10MarriageAfter14(families, individuals)
-  utils.us11NoBigamy(families, individuals)
-  utils.us12ParentsNotTooOld(families, individuals)
-  utils.us13SiblingSpacing(families, individuals)
-  utils.us14MultipleBirths(families)
-  utils.us17NoMarriagesToDescendents(individuals, families)
-  utils.us18NoSiblingMarriages(individuals, families)
-  utils.us21CorrectGenderForRole(individuals, families)
-  utils.us22UniqueIDs(individuals, families)
-  utils.us31ListLivingSingle(individuals, families)
-  utils.us32ListMultipleBirths(individuals)
+  us01 = utils.us01DatesBeforeCurrentDate(individuals, families)
+  us40(us01)
+  us02 = utils.us02BirthBeforeMarriage(individuals, families)
+  us40(us02)
+  us03 = utils.us03DeathBeforeBirth(individuals)
+  us40(us03)
+  us04 = utils.us04MarriageBeforeDivorce(families)
+  us40(us04)
+  us05 = utils.us05MarriageBeforeDeath(families, individuals)
+  us40(us05)
+  us06 = utils.us06DivorceBeforeDeath(families, individuals)
+  us40(us06)
+  us07 = utils.us07AgeOver150(individuals)
+  us40(us07)
+  us08 = utils.us08BirthBeforeMarriage(families, individuals)
+  us40(us08)
+  us09 = utils.us09BirthBeforeDeathOfParents(families, individuals)
+  us40(us09)
+  us10 = utils.us10MarriageAfter14(families, individuals)
+  us40(us10)
+  us11 = utils.us11NoBigamy(families, individuals)
+  us40(us11)
+  us12 = utils.us12ParentsNotTooOld(families, individuals)
+  us40(us12)
+  us13 = utils.us13SiblingSpacing(families, individuals)
+  us40(us13)
+  us14 = utils.us14MultipleBirths(families)
+  us40(us14)
+  us17 = utils.us17NoMarriagesToDescendents(individuals, families)
+  us40(us17)
+  us18 = utils.us18NoSiblingMarriages(individuals, families)
+  us40(us18)
+  us21 = utils.us21CorrectGenderForRole(individuals, families)
+  us40(us21)
+  us22 = utils.us22UniqueIDs(individuals, families)
+  us40(us22)
 findat(f)
 printIndividuals(individuals)
 printFamily(families)
