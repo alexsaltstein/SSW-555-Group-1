@@ -176,6 +176,49 @@ class us20AuntsandUncles(unittest.TestCase):
         output = utilities.us20AuntsandUncles([], [])
         self.assertEqual(output, [])
         
+class us33OrphanedChildren(unittest.TestCase): 
+    def testOrphanedChild(self):
+        F1 = script.Family("F1")
+        I1 = script.Individual("I1")
+        I2 = script.Individual("I2")
+        I3 = script.Individual("I3")
+        F1.husbId = "I1"
+        F1.wifeId = "I2"
+        F1.children = ["I3"]
+        I1.birthday = "7 JUL 1970"
+        I2.birthday = "7 NOV 1970"
+        I3.birthday = "3 JUL 2015"
+        I1.death = "7 JUL 2017"
+        I2.death = "7 JUL 2018"
+        I3.death = "NA"
+        output = utilities.us33OrphanedChildren([F1], [I1, I2, I3])
+        self.assertEqual(output, ["I3"])
+        
+    def testEmptyList(self):
+        output = utilities.us33OrphanedChildren([], [])
+        self.assertEqual(output, [])
+
+
+class us34LargeAgeDifferences(unittest.TestCase): 
+   
+    def testLargeAge(self):
+        F1 = script.Family("F1")
+        I1 = script.Individual("I1")
+        I2 = script.Individual("I2")
+        F1.married = "2 JAN 2017"
+        F1.husbId = "I1"
+        F1.wifeId = "I2"
+        I1.spouse = "I2"
+        I2.spouse = "I1"
+        I1.birthday = "7 JUL 1970"
+        I2.birthday = "8 NOV 1999"
+        output = utilities.us34LargeAgeDifferences([F1], [I1,I2])
+        self.assertEqual(output, ["F1"])
+  
+    def testEmptyList(self):
+        output = utilities.us34LargeAgeDifferences([], [])
+        self.assertEqual(output, [])
+        
 if __name__ == '__main__':
     unittest.main()  
   
