@@ -29,7 +29,7 @@ class us02BirthBeforeMarriage(unittest.TestCase):
         F1 = script.Family("F1")
         F1.marriage = "9 JAN 1985"
         output = utilities.us02BirthBeforeMarriage([I1], [F1])
-        self.assertEqual(len(output), 1)
+        self.assertEqual(len(output), 0)
 
     def testMultipleInvalidMarriageBeforeBirth(self):
         I1 = script.Individual("I1")

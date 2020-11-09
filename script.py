@@ -12,7 +12,7 @@ Description: This python script reads the specified GEDCOM file that you want to
       <level> is the level of the input line, e.g. 0, 1, 2
       <tag> is the tag associated with the line, e.g. 'INDI', 'FAM', 'DATE', ...
       <valid?> has the value 'Y' if the tag is one of the supported tags or 'N' otherwise.  The set of all valid tags for our project is specified in the Project Overview document.
-      <arguments> is the rest of the line beyond the level and tag.
+      <arguments> is the rest of the line beyond the level and tag.   
 """
 class Individual:
   def __init__(self, iD):
@@ -65,7 +65,7 @@ def printFamily(families):
 #beginning of script
 validTags = ["INDI","NAME","SEX","BIRT","DEAT","FAMC","FAMS","FAM","MARR","HUSB","WIFE","CHIL","DIV","DATE","HEAD","TRLR","NOTE"]
 
-f = open("my-family.ged", "r")
+f = open("Miriam-family.ged", "r")
 
 individuals = []
 families = []
@@ -105,7 +105,11 @@ def findat(f):
             birthday = " ".join(linelist[2:])
             datetime_object = datetime.strptime(birthday, '%d %b %Y')
             individuals[len(individuals)-1].birthday = birthday
-            individuals[len(individuals)-1].age = str((datetime.now() - datetime_object)/365).split(" ")[0]
+            individuals[len(individuals)-1].age = str((datetime.now() - datetime_object)).split(" ")[0]
+            if int(individuals[len(individuals)-1].age) < 365:
+              individuals[len(individuals)-1].age = '0'
+            else:
+              individuals[len(individuals)-1].age = str(int(int(individuals[len(individuals)-1].age)/365))
             findingBirt = False
           if findingDeat:
             individuals[len(individuals)-1].death = " ".join(linelist[2:])
@@ -162,14 +166,24 @@ def printErrors():
   utils.us02BirthBeforeMarriage(individuals, families)
   utils.us03DeathBeforeBirth(individuals)
   utils.us04MarriageBeforeDivorce(families)
+  utils.us05MarriageBeforeDeath(families, individuals)
+  utils.us06DivorceBeforeDeath(families, individuals)
   utils.us07AgeOver150(individuals)
   utils.us08BirthBeforeMarriage(families, individuals)
   utils.us09BirthBeforeDeathOfParents(families, individuals)
   utils.us10MarriageAfter14(families, individuals)
   utils.us11NoBigamy(families, individuals)
   utils.us12ParentsNotTooOld(families, individuals)
+  utils.us13SiblingSpacing(families, individuals)
   utils.us14MultipleBirths(families)
-
+  utils.us17NoMarriagesToDescendents(individuals, families)
+  utils.us18NoSiblingMarriages(individuals, families)
+  utils.us21CorrectGenderForRole(individuals, families)
+  utils.us22UniqueIDs(individuals, families)
+  utils.us31ListLivingSingle(individuals, families)
+  utils.us32ListMultipleBirths(individuals)
+  utils.us35ListRecentBirths(individuals, families)
+  utils.us36ListRecentDeaths(individuals, families)
 findat(f)
 printIndividuals(individuals)
 printFamily(families)
