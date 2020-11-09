@@ -3,7 +3,7 @@ from datetime import datetime
 import importlib
 utils = importlib.import_module("utilities")
 """
-Author: Alex Saltstein, Daniel Collins, James Surless, Miriam Podkolzin, Kenny Mason, Brandon Patton
+Author: Alex Saltstein, Daniel Collins, James Surless, Miriam Podkolzin, Kenny Mason, Brandon Patton, Guangchen Li
 
 Description: This python script reads the specified GEDCOM file that you want to read then outputs in a
   pretty format the individuals and the families
@@ -14,12 +14,15 @@ Description: This python script reads the specified GEDCOM file that you want to
       <valid?> has the value 'Y' if the tag is one of the supported tags or 'N' otherwise.  The set of all valid tags for our project is specified in the Project Overview document.
       <arguments> is the rest of the line beyond the level and tag.   
 """
+
 class Individual:
   def __init__(self, iD):
     self.iD = iD
     self.name = ""
     self.gender = ""
     self.birthday = ""
+    self.birthdayDayPartial = False
+    self.birthdayMonthPartial = True
     self.age = ""
     self.alive = True
     self.death = "NA"
@@ -61,6 +64,14 @@ def printFamily(families):
     table.add_row(f.toList())
   print("Families")
   print(table)
+
+def toPartial(s, ind):
+  if ind.birthdayDayPartial:
+    datetime_object_birt_split = s.split(' ')
+    datetime_object_birt_split[0] = '??'
+    if individuals[len(individuals)-1].birthdayMonthPartial:
+      datetime_object_birt_split[1] = '??'
+    return datetime_object_birt_split[0] + ' ' + datetime_object_birt_split[1] + ' ' + datetime_object_birt_split[2]
 
 #beginning of script
 validTags = ["INDI","NAME","SEX","BIRT","DEAT","FAMC","FAMS","FAM","MARR","HUSB","WIFE","CHIL","DIV","DATE","HEAD","TRLR","NOTE"]
@@ -114,6 +125,7 @@ def findat(f):
           if findingDeat:
             individuals[len(individuals)-1].death = " ".join(linelist[2:])
             datetime_object_birt = datetime.strptime(individuals[len(individuals)-1].birthday, '%d %b %Y')
+            # datetime_object_birt = toPartial(datetime_object_birt, individuals[len(individuals)-1])
             datetime_object_deat = datetime.strptime(individuals[len(individuals)-1].death, '%d %b %Y')
             individuals[len(individuals)-1].age = str((datetime_object_deat - datetime_object_birt)/365).split(" ")[0]
             individuals[len(individuals)-1].alive = False
