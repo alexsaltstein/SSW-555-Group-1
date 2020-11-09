@@ -424,3 +424,27 @@ def us16MaleLastNames(individuals, families):
                 output.append(fam.iD)
                 print(KEY_WORD + fam.iD + " not all males have the same last name")
   return output
+
+
+'''
+    This function loops through all individuals and 
+    creates a list of deceased
+'''
+  def us29ListDeceased(individuals):
+    output = []
+    for ind in individuals:
+        if (ind.alive == False):
+            output.append(ind)
+    return output
+
+
+'''
+    This function loops through all individuals and 
+    creates a list of all living married people
+'''
+    def us30ListLivingMarried(individuals):
+        output = []
+        for ind in individuals:
+            if (ind.spouse != "NA"):
+                output.append(ind)
+        return output

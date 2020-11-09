@@ -74,5 +74,21 @@ class us02BirthBeforeMarriage(unittest.TestCase):
         output = utilities.us16MaleLastNames(I1, F1)
         self.assertEqual(output, [])
 
+    def testDeceasedListValid(self):
+        I1 = script.Individual("I1")
+        I1.alive = False
+        I2 = script.Individual("I2")
+        I2.alive = False
+        output = utilities.us29ListDeceased([I1,I2])
+        self.assertEqual(output, [])
+
+    def testLivingMarriedListValid(self):
+        I1 = script.Individual("I1")
+        I1.spouse = "Jerry Killinger"
+        I2 = script.Individual("I2")
+        I2.spouse = "Sarah Berger"
+        output = utilities.us30ListLivingMarried([I1,I2])
+        self.assertEqual(output, [])
+
 if __name__ == '__main__':
     unittest.main()
