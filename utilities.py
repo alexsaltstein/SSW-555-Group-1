@@ -647,7 +647,64 @@ def us32ListMultipleBirths(individuals):
     for id in output:
       print("\t" + id)
   return output
-  
+ 
+
+
+def us33OrphanedChildren(families, individuals):
+    '''
+    Function that outputs when an orphaned child is identified. An orphaned 
+    child is someone who has both parents dead and is under 18 years old. 
+    '''
+    output = []
+    now = datetime.now()
+    for fam in families:
+        father = fam.husbId
+        mother = fam.wifeId
+        children = fam.children
+        for indi in individuals:
+            if indi.iD == father and indi.death != "NA":
+                #print (indi.iD)
+                for indi2 in individuals:
+                    if indi2.iD == mother and indi2.death != "NA":
+                        #print(indi2.iD)
+                        for indi3 in individuals:
+                            if str(indi3.iD) in children:
+                                #print(indi3.iD)
+                                age =  now - datetime.strptime(indi3.birthday, '%d %b %Y')
+                                if age.days < 6570:
+                                    output.append(indi3.iD)
+                                    print("US33: " + indi3.iD + " is an orphaned child from family " + fam.iD)
+    return output          
+
+
+
+def us34LargeAgeDifferences(families, individuals):
+    '''
+    Function that lists all couples that were married when the older spouse
+    was more than twice as old as the younger spouse. 
+    '''
+    output = []
+    KEY_WORD = "ERROR: FAMILY: US34"
+    for fam in families:
+        mardate = fam.married
+        husband = fam.husbId
+        wife = fam.wifeId
+        for indi in individuals:
+            if indi.iD == husband:
+                mar_husb = datetime.strptime(mardate, '%d %b %Y') -  datetime.strptime(indi.birthday, '%d %b %Y')
+                mar_husb = mar_husb.days
+                for indi2 in individuals:
+                    if indi2.iD == wife:
+                        mar_wife = datetime.strptime(mardate, '%d %b %Y') -  datetime.strptime(indi2.birthday, '%d %b %Y')
+                        mar_wife = mar_wife.days
+                        if mar_husb > 2 * mar_wife:
+                            output.append(fam.iD)
+                            print(KEY_WORD + ": Husband " + "(" + husband + ")" + " was at least twice as old as wife " + "(" + wife + ")"+ " at time of marriage")
+                        if mar_wife > 2 * mar_husb:
+                            output.append(fam.iD)
+                            print(KEY_WORD + ": Wife " + "(" + wife + ")" + " was at least twice as old as husband " + "(" + husband + ")"+ " at time of marriage")
+    return output    
+    
 def us37ListRecentSurvivors(individuals, families):
     '''Prints out the recent survivors (spouses and descendants) of individuals who died in the last 30 days'''
     KEY_WORD = "ERROR: INDIVIDUALS: US37: "
