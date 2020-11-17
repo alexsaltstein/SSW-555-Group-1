@@ -184,6 +184,9 @@ def printErrors():
   utils.us32ListMultipleBirths(individuals)
   utils.us35ListRecentBirths(individuals, families)
   utils.us36ListRecentDeaths(individuals, families)
+  utils.us47MostRecentMarriage(families)
+  utils.us48MostRecentDivorce(families)
+  
 findat(f)
 printIndividuals(individuals)
 printFamily(families)
