@@ -680,3 +680,65 @@ def us38ListUpcomingBirthdays(individuals):
     for name in output:
         print("\t" + name)
     return output
+
+def us47MostRecentMarriage(families):
+    now = datetime.now()
+    marr_diff = []
+    marriages = []
+    output = []
+    if len(families) == 0:
+        print('US47: There are no families so there is no most recent marriage')
+        return []
+    for fam in families:
+        if fam.married == 'NA' or fam.married == ' ' :
+            marr_diff.append(1000000000)
+            marriages.append(fam.iD)
+            continue
+        else:
+            diff =  now - datetime.strptime(fam.married, '%d %b %Y')
+            diff = diff.days
+            marr_diff.append(diff)
+            marriages.append(fam.iD) 
+    
+    
+    mostrecent = marr_diff[0]
+    for i in marr_diff:
+        if i < mostrecent:
+            mostrecent = i
+    mostrecentfamloc = marr_diff.index(mostrecent)
+    output.append(marriages[mostrecentfamloc])
+    print('US47: The most recent marriage is from family ' + marriages[mostrecentfamloc])
+    return output
+    
+'''
+    Function that outputs the family ID for the most recent divorce.
+'''
+
+def us48MostRecentDivorce(families):
+    now = datetime.now()
+    div_diff = []
+    divorces = []
+    output = []
+    if len(families) == 0:
+        print('US48: There are no families so there is no most recent divorce')
+        return []
+    for fam in families:
+        if fam.divorced == 'NA' or fam.divorced == ' ' :
+            div_diff.append(1000000000)
+            divorces.append(fam.iD)
+            continue
+        else:
+            diff =  now - datetime.strptime(fam.divorced, '%d %b %Y')
+            diff = diff.days
+            div_diff.append(diff)
+            divorces.append(fam.iD) 
+    
+    
+    mostrecent = div_diff[0]
+    for i in div_diff:
+        if i < mostrecent:
+            mostrecent = i
+    mostrecentfamloc = div_diff.index(mostrecent)
+    output.append(divorces[mostrecentfamloc])
+    print('US48: The most recent divorce is from family ' + divorces[mostrecentfamloc])
+    return output
