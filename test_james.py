@@ -219,9 +219,80 @@ class us34LargeAgeDifferences(unittest.TestCase):
         output = utilities.us34LargeAgeDifferences([], [])
         self.assertEqual(output, [])
         
+class us47MostRecentMarriage(unittest.TestCase): 
+   
+    def testMostRecent(self):
+        F1 = script.Family("F1")
+        F2 = script.Family("F2")
+        F3 = script.Family("F3")
+        F4 = script.Family("F4")
+        F5 = script.Family("F5")
+        F1.married = "8 NOV 1990"
+        F2.married = "8 NOV 1980"
+        F3.married = "8 NOV 1970"
+        F4.married = "8 NOV 2020"
+        F5.married = "8 NOV 2010"
+        output = utilities.us47MostRecentMarriage([F1, F2, F3, F4, F5])
+        self.assertEqual(output, ["F4"])
+    
+    def testNA(self):
+        F1 = script.Family("F1")
+        F2 = script.Family("F2")
+        F1.married = "NA"
+        F2.married = "8 NOV 1980"
+        output = utilities.us47MostRecentMarriage([F1, F2])
+        self.assertEqual(output, ["F2"])
+    
+    def testEmptyStringMarriage(self):
+        F1 = script.Family("F1")
+        F2 = script.Family("F2")
+        F1.married = " "
+        F2.married = "8 NOV 1980"
+        output = utilities.us47MostRecentMarriage([F1, F2])
+        self.assertEqual(output, ["F2"]) 
+        
+    def testEmptyList(self):
+        output = utilities.us47MostRecentMarriage([])
+        self.assertEqual(output, [])
+
+class us48MostRecentDivorce(unittest.TestCase): 
+   
+    def testMostRecent(self):
+        F1 = script.Family("F1")
+        F2 = script.Family("F2")
+        F3 = script.Family("F3")
+        F4 = script.Family("F4")
+        F5 = script.Family("F5")
+        F1.divorced = "8 NOV 1990"
+        F2.divorced = "8 NOV 1980"
+        F3.divorced = "8 NOV 1970"
+        F4.divorced = "8 NOV 2020"
+        F5.divorced = "8 NOV 2010"
+        output = utilities.us48MostRecentDivorce([F1, F2, F3, F4, F5])
+        self.assertEqual(output, ["F4"])
+    
+    def testNA(self):
+        F1 = script.Family("F1")
+        F2 = script.Family("F2")
+        F1.divorced = "NA"
+        F2.divorced = "8 NOV 1980"
+        output = utilities.us48MostRecentDivorce([F1, F2])
+        self.assertEqual(output, ["F2"])
+    
+    def testEmptyStringMarriage(self):
+        F1 = script.Family("F1")
+        F2 = script.Family("F2")
+        F1.divorced = " "
+        F2.divorced = "8 NOV 1980"
+        output = utilities.us48MostRecentDivorce([F1, F2])
+        self.assertEqual(output, ["F2"]) 
+        
+    def testEmptyList(self):
+        output = utilities.us48MostRecentDivorce([])
+        self.assertEqual(output, [])
+        
 if __name__ == '__main__':
     unittest.main()  
-  
 
 '''
 def testSingleValidMarriageBeforeDeath(self):
