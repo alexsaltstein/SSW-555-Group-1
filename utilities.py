@@ -189,8 +189,8 @@ def us06DivorceBeforeDeath(families, individuals):
 
 
 def us07AgeOver150(individuals):
-    for i in individuals:
-        print(i.age)
+#    for i in individuals:
+#        print(i.age)
     '''KEY_WORD = "ERROR: INDIVIDUALS: US07: "
     output = []
     for indi in individuals:
@@ -680,3 +680,35 @@ def us38ListUpcomingBirthdays(individuals):
     for name in output:
         print("\t" + name)
     return output
+
+
+'''
+    This function loops through individuals and makes sure that
+    age exists and is greater than 0 and if there is an error outputs
+    that there is a age <= 0 error returns list of id's with errors
+'''
+def us45AgeGreaterThan0(individuals):
+  KEY_WORD = "ERROR: INDIVIDUALS: US45: "
+  output = []
+  for indi in individuals:
+    isAgeLessThan0 = indi.age != "" and int(indi.age) < 0
+    if isAgeLessThan0:
+        print(KEY_WORD + indi.iD + ": Age " + indi.age + " is less than 0 or doesn't exist")
+        output.append(indi.iD)
+  return output
+
+'''
+    This function loops through individuals and lists unique lastnames
+'''
+def us46ListUniqueLastnames(individuals):
+  KEY_WORD = "LIST: INDIVIDUALS: US46: "
+  output = []
+  for indi in individuals:
+    lastname = indi.name.split(" ")[1]
+    if lastname not in output:
+        output.append(lastname)
+  if len(output) > 0:
+    print(KEY_WORD)
+    for n in output:
+      print("\t",n)
+  return output
