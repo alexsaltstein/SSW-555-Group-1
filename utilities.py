@@ -193,7 +193,7 @@ def us06DivorceBeforeDeath(families, individuals):
 def us07AgeOver150(individuals):
 #    for i in individuals:
 #        print(i.age)
-    '''KEY_WORD = "ERROR: INDIVIDUALS: US07: "
+    KEY_WORD = "ERROR: INDIVIDUALS: US07: "
     output = []
     for indi in individuals:
         isOver150 = indi.age != '' and int(indi.age) > 149
@@ -201,7 +201,7 @@ def us07AgeOver150(individuals):
             print(KEY_WORD + indi.iD + ": Age " + str(indi.age) + ", over 150")
             output.append(indi.iD)
     return output
-'''
+
 
 '''
     This function loops through families and makes sure that
@@ -805,3 +805,29 @@ def us46ListUniqueLastnames(individuals):
       print("\t",n)
   return output
 
+def us53DivorcedInFiveYears(families, individuals):
+    '''List all couples that divorced within 5 years of getting married'''
+    KEY_WORD = "List - US53: "
+    output = []
+    fams = [f for f in families if f.divorced != "NA"]
+    for fam in fams:
+        marr = datetime.strptime(fam.married, '%d %b %Y')
+        div = datetime.strptime(fam.divorced, '%d %b %Y')
+        five = marr + dateutil.relativedelta.relativedelta(years=5)
+        if (marr <= div <= five):
+            output.append([fam.husbId, fam.wifeId, fam.iD])
+            print(KEY_WORD + "Family " + fam.iD + " was divorced within five years of marriage.")
+    return output
+
+def us54DivorcedInFifteenYears(families, individuals):
+    '''List all couples that divorced within 15 years of getting married'''
+    KEY_WORD = "List - US54: "
+    output = []
+    fams = [f for f in families if f.divorced != "NA"]
+    for fam in fams:
+        marr = datetime.strptime(fam.married, '%d %b %Y')
+        div = datetime.strptime(fam.divorced, '%d %b %Y')
+        if (marr <= div <= (marr + dateutil.relativedelta.relativedelta(years=15))):
+            output.append([fam.husbId, fam.wifeId, fam.iD])
+            print(KEY_WORD + "Family " + fam.iD + " was divorced within fifteen years of marriage.")
+    return output

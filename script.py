@@ -226,7 +226,7 @@ def printErrors():
   us40(us21)
   us22 = utils.us22UniqueIDs(individuals, families)
   us40(us22)
-  
+
 findat(f)
 printIndividuals(individuals)
 printFamily(families)
