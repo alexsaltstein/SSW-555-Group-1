@@ -1,6 +1,7 @@
 # This is the utilities script for how we are going to implement stories for each sprint
 from datetime import datetime
 from datetime import date
+from datetime import timedelta
 import dateutil.relativedelta
 from collections import Counter
 
@@ -95,11 +96,11 @@ def us04MarriageBeforeDivorce(families):
     This function loops through individuals in each
     family and ensures that any marriages occur
     before the death of a spouse. If there are any
-    erros, this function will print out an error 
-    statement. The error statement includes 
+    erros, this function will print out an error
+    statement. The error statement includes
     information regarding the id of the family for
     the invalid marriage, the invalid marriage date,
-    the id of the individual who died before the 
+    the id of the individual who died before the
     marriage date, and the individual's death date.
 '''
 
@@ -133,17 +134,18 @@ def us05MarriageBeforeDeath(families, individuals):
                 print(
                     KEY_WORD + ' ' + fam.iD + ":" + " Married " + fam.married + " after wife's " + '(' + w.iD + ')' + " death on " + w.death)
                 output.append(fam.iD)
+    return output
 
 
 '''
     This function loops through individuals in each
-    family to ensure that all divorces occur before 
+    family to ensure that all divorces occur before
     the death of either spouse. If there are any
-    erros, this function will print out an error 
-    statement. The error statement includes 
+    erros, this function will print out an error
+    statement. The error statement includes
     information regarding the id of the family for
-    the invalid divorce, the invalid divorce date, 
-    the id of the individual who died before the 
+    the invalid divorce, the invalid divorce date,
+    the id of the individual who died before the
     divorce date, and the individual's death date.
 '''
 
@@ -462,7 +464,7 @@ def us17NoMarriagesToDescendents(individuals, families):
 '''
 def getFamOfId(id, individuals):
   return individuals[int(id[1:])-1].child
-  
+
 '''
     This function loops through individuals and makes sure that
     birth occurs before death and if there is an error outputs
@@ -518,7 +520,7 @@ def us22UniqueIDs(individuals, families):
             print(KEY_WORD + indiID + ": Duplicate Individual ID")
             output.append(indiID)
     return output
-    
+
 
 def findDupes(itemList):
     dupes = []
@@ -569,6 +571,68 @@ def us24UniqueFamiliesBySpouses(families):
         print(KEY_WORD + "Duplicate marriage date(s): " + str(marriageDupes))
     output.extend(spouseDupes)
     output.extend(marriageDupes)
+    return output
+
+def us25UniqueFirstNames(families, individuals):
+    '''Checks for multiple children in the same family with the same first name and birthday'''
+    KEY_WORD = "ERROR - US25: "
+    output = []
+    fams = [f for f in families if len(f.children) > 1]
+
+    for family in fams:
+        kids, chldrn = [], []
+        for child in family.children:
+            c = next(c for c in individuals if c.iD == child)
+            chldrn.append([c.iD, [c.name, c.birthday]])
+            kids.append([c.name, c.birthday])
+        for kid in kids:
+            kids.remove(kid)
+            if kid in kids:
+                lst = [c[0] for c in chldrn if kid == c[1]]
+                lst.append(family.iD)
+                output.extend(lst)
+                print(KEY_WORD + "There is more than one " + kid[0] + " with the same birthday in family " + family.iD)
+    return output
+
+def us26CorrespondingEntries(families, individuals):
+    '''Checks that all entries in Families have properly corresponding Individual entries, and vice versa'''
+    KEY_WORD = "ERROR - US26: "
+    output = []
+    fams = [f for f in families]
+    inds = [i for i in individuals]
+    for fam in fams:
+        h = next(h for h in inds if h.iD == fam.husbId)
+        w = next(w for w in inds if w.iD == fam.wifeId)
+        if(w.spouse != fam.husbId or h.spouse != fam.wifeId):
+            print(KEY_WORD + fam.wifeName + "'s (" + fam.wifeId + ") and " + fam.husbName + "'s (" + fam.husbId + ") individual spousal records do not align with their family (" + fam.iD + ") record.")
+            output.extend([fam.wifeId, fam.husbId, fam.iD])
+        if(fam.children != w.child):
+                print(KEY_WORD + fam.wifeName + "'s (" + fam.wifeId + ") individual child record does not align with her family (" + fam.iD + ") record.")
+                output.extend([fam.wifeId, fam.iD])
+        if(fam.children != h.child):
+                print(KEY_WORD + fam.husbName + "'s (" + fam.husbId + ") individual child record does not align with his family (" + fam.iD + ") record.")
+                output.extend([fam.husbId, fam.iD])
+
+    for ind in inds:
+        if ind.spouse != "NA":
+            f = next(f for f in fams if ind.iD == f.husbId or ind.iD == f.wifeId)
+            if not ((ind.iD == f.husbId and ind.spouse == f.wifeId) or (ind.iD == f.wifeId and ind.spouse == f.husbId)):
+                print(KEY_WORD + ind.name + "'s (" + ind.iD + ") individual spousal record does not align with their family (" + f.iD + ") record.")
+                output.extend([ind.iD, ind.spouse, f.iD])
+            if ind.child != f.children:
+                print(KEY_WORD + ind.name + "'s (" + ind.iD + ") individual child record does not align with their family (" + f.iD + ") children record.")
+                output.extend([ind.iD, f.iD])
+        asKid = [f for f in fams if ind.iD in f.children]
+        if len(asKid) > 0:
+            fam = asKid[0]
+            h = next(h for h in inds if h.iD == fam.husbId)
+            w = next(w for w in inds if w.iD == fam.wifeId)
+            if ind.iD not in h.child:
+                print(KEY_WORD + ind.name + " (" + ind.iD + ") does not appear in one or more of their father's (" + h.iD + ") child record.")
+                output.extend([ind.iD, h.iD, f.iD])
+            if ind.iD not in w.child:
+                print(KEY_WORD + ind.name + " (" + ind.iD + ") does not appear in one or more of their mother's (" + w.iD + ") child record.")
+                output.extend([ind.iD, w.iD, f.iD])
     return output
 
 def getChildrenNames(childrenIds, individuals):
@@ -647,7 +711,7 @@ def us32ListMultipleBirths(individuals):
     for id in output:
       print("\t" + id)
   return output
-  
+
 def us37ListRecentSurvivors(individuals, families):
     '''Prints out the recent survivors (spouses and descendants) of individuals who died in the last 30 days'''
     KEY_WORD = "ERROR: INDIVIDUALS: US37: "
@@ -681,6 +745,34 @@ def us38ListUpcomingBirthdays(individuals):
         print("\t" + name)
     return output
 
+def us39ListUpcomingAnniversaries(families, individuals):
+    '''List all anniversaries of living couples that are coming up within 30 days'''
+    KEY_WORD = "List - US39: "
+    output = []
+    fams = [f for f in families if f.married]
+    today = datetime.now()
+    month = today + timedelta(days=30)
+    for fam in fams:
+        h = next(h for h in individuals if h.iD == fam.husbId)
+        w = next(w for w in individuals if w.iD == fam.wifeId)
+        anniv = datetime.strptime(fam.married, '%d %b %Y')
+        if today.month == 12 and today.day > 1:
+            if anniv.month == 12:
+                anniv = anniv.replace(year = today.year)
+                if h.alive and w.alive and (today <= anniv <= month):
+                    output.append([h.iD, w.iD, fam.iD])
+                    print(KEY_WORD + h.name + " and " + w.name + " have their anniversary coming up! Family " + fam.iD)
+            elif anniv.month == 1:
+                anniv = anniv.replace(year = month.year)
+                if h.alive and w.alive and (anniv <= month):
+                    output.append([h.iD, w.iD, fam.iD])
+                    print(KEY_WORD + h.name + " and " + w.name + " have their anniversary coming up! Family " + fam.iD)
+        else:
+            anniv = anniv.replace(year = today.year)
+            if h.alive and w.alive and (today <= anniv <= month):
+                output.append([h.iD, w.iD, fam.iD])
+                print(KEY_WORD + h.name + " and " + w.name + " have their anniversary coming up! Family " + fam.iD)
+    return output
 
 '''
     This function loops through individuals and makes sure that
@@ -712,3 +804,4 @@ def us46ListUniqueLastnames(individuals):
     for n in output:
       print("\t",n)
   return output
+
