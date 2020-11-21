@@ -191,7 +191,9 @@ def us06DivorceBeforeDeath(families, individuals):
 
 
 def us07AgeOver150(individuals):
-    KEY_WORD = "ERROR: INDIVIDUALS: US07: "
+#    for i in individuals:
+#        print(i.age)
+    '''KEY_WORD = "ERROR: INDIVIDUALS: US07: "
     output = []
     for indi in individuals:
         isOver150 = indi.age != '' and int(indi.age) > 149
@@ -199,7 +201,7 @@ def us07AgeOver150(individuals):
             print(KEY_WORD + indi.iD + ": Age " + str(indi.age) + ", over 150")
             output.append(indi.iD)
     return output
-
+'''
 
 '''
     This function loops through families and makes sure that
@@ -640,6 +642,41 @@ def getChildrenNames(childrenIds, individuals):
             if c.iD == i.iD:
                 childrenNames.append(i.name)
     return childrenNames
+'''def us21CorrectGenderForRole(individuals, families):
+    KEY_WORD = "ERROR: FAMILY: US21: "
+    output = []
+    for fam in families:
+        husbandId = fam.husbId
+        wifeId = fam.wifeId
+        for indi in individuals:
+            incorrectHusbRole = indi.iD == husbandId and indi.gender == 'F'
+            incorrectWifeRole = indi.iD == wifeId and indi.gender == 'M'
+            if (incorrectHusbRole):
+                print(KEY_WORD + indi.iD + ": " + fam.iD +  ": Husband is Female")
+                output.append(indi.iD)
+            if (incorrectWifeRole):
+                print(KEY_WORD + indi.iD + ": " + fam.iD +  ": Wife is Male")
+                output.append(indi.iD)
+    return output'''
+    # List all individuals born in the last 30 days
+def us35ListRecentBirths(individuals, families):
+    KEY_WORD = "ERROR: INDIVIDUALS: US35: "
+    output = []
+    for i in individuals:
+        if (datetime.today() - makeDateTimeObject(i.birthday)).days <=30:
+            print(KEY_WORD + i.iD + ": " + "Born in the last 30 days")
+            output.append(i.iD)
+    return output
+
+    # List all individuals who have died in the last 30 days
+def us36ListRecentDeaths(individuals, families):
+    KEY_WORD = "ERROR: INDIVIDUALS: US36: "
+    output = []
+    for i in individuals:
+        if i.alive==False and (datetime.today() - makeDateTimeObject(i.death)).days <=30:
+            print(KEY_WORD + i.iD + ": " + "Died in the last 30 days")
+            output.append(i.iD)
+    return output
 
 def us31ListLivingSingle(individuals, families):
   '''Prints out a list of all living people in a GEDCOM file over 30 and who have never been married'''
@@ -736,3 +773,35 @@ def us39ListUpcomingAnniversaries(families, individuals):
                 output.append([h.iD, w.iD, fam.iD])
                 print(KEY_WORD + h.name + " and " + w.name + " have their anniversary coming up! Family " + fam.iD)
     return output
+
+'''
+    This function loops through individuals and makes sure that
+    age exists and is greater than 0 and if there is an error outputs
+    that there is a age <= 0 error returns list of id's with errors
+'''
+def us45AgeGreaterThan0(individuals):
+  KEY_WORD = "ERROR: INDIVIDUALS: US45: "
+  output = []
+  for indi in individuals:
+    isAgeLessThan0 = indi.age != "" and int(indi.age) < 0
+    if isAgeLessThan0:
+        print(KEY_WORD + indi.iD + ": Age " + indi.age + " is less than 0 or doesn't exist")
+        output.append(indi.iD)
+  return output
+
+'''
+    This function loops through individuals and lists unique lastnames
+'''
+def us46ListUniqueLastnames(individuals):
+  KEY_WORD = "LIST: INDIVIDUALS: US46: "
+  output = []
+  for indi in individuals:
+    lastname = indi.name.split(" ")[1]
+    if lastname not in output:
+        output.append(lastname)
+  if len(output) > 0:
+    print(KEY_WORD)
+    for n in output:
+      print("\t",n)
+  return output
+
