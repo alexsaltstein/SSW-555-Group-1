@@ -805,6 +805,37 @@ def us46ListUniqueLastnames(individuals):
       print("\t",n)
   return output
 
+def findMaleChild(childID, individuals):
+    for i in individuals:
+        if i.iD == childID and i.gender == 'M':
+            return True
+
+def us51FamilyHasMaleChild(families, individuals):
+    '''Lists all Families with at least 1 male child'''
+    KEY_WORD = "List - US51: "
+    output = []
+    fams = [f for f in families if f.children != []]
+    for fam in fams:
+        for c in fam.children:
+            if (findMaleChild(c.iD, individuals)):
+                if fam.iD not in output:
+                    output.append(str(fam.iD))
+    return output
+
+def us52DivorcedInTenYears(families, individuals):
+    '''List all couples that divorced within 10 years of getting married'''
+    KEY_WORD = "List - US52: "
+    output = []
+    fams = [f for f in families if f.divorced != "NA"]
+    for fam in fams:
+        marr = datetime.strptime(fam.married, '%d %b %Y')
+        div = datetime.strptime(fam.divorced, '%d %b %Y')
+        ten = marr + dateutil.relativedelta.relativedelta(years=10)
+        if (marr <= div <= ten):
+            output.append([fam.husbId, fam.wifeId, fam.iD])
+            print(KEY_WORD + "Family " + fam.iD + " was divorced within ten years of marriage.")
+    return output
+
 def us53DivorcedInFiveYears(families, individuals):
     '''List all couples that divorced within 5 years of getting married'''
     KEY_WORD = "List - US53: "

@@ -442,7 +442,7 @@ class testUS23(unittest.TestCase):
 
         output = utils.us37ListRecentSurvivors(individuals, families)
         self.assertEqual(output, [["James", ["Brad"]], ['Lauren', ["Jon"]]])'''
-class testUS38(unittest.TestCase):
+'''class testUS38(unittest.TestCase):
     def testUpcomingBirthday(self):
         I1 = script.Individual("I1")
 
@@ -471,6 +471,84 @@ class testUS38(unittest.TestCase):
         individuals = [I1, I2, I3]
         output = utils.us38ListUpcomingBirthdays(individuals)
         self.assertEqual(output, ["James", "Amanda", "Taylor"])
+class testUS51And52(unittest.TestCase):
+    def testMaleChild(self):
+        I1 = script.Individual("I1")
+        F1 = script.Family("F1")
+
+        I1.gender = "M"
+        I1.name = "James"
+
+        F1.children = [I1]
+        individuals = [I1]
+        families = [F1]
+        output = utils.us51FamilyHasMaleChild(families, individuals)
+        self.assertEqual(output, ["F1"])
+
+    def testMultipleMaleChild(self):
+        I1 = script.Individual("I1")
+        I2 = script.Individual("I2")
+        F1 = script.Family("F1")
+
+        I1.gender = "M"
+        I1.name = "James"
+        I2.gender = "M"
+        I2.name = "Arthur"
+
+        F1.children = [I1, I2]
+        individuals = [I1, I2]
+        families = [F1]
+        output = utils.us51FamilyHasMaleChild(families, individuals)
+        self.assertEqual(output, ["F1"])
+
+    def testMultipleFamiliesMaleChild(self):
+        I1 = script.Individual("I1")
+        I2 = script.Individual("I2")
+        F1 = script.Family("F1")
+        F2 = script.Family("F2")
+
+        I1.gender = "M"
+        I1.name = "James"
+        I2.gender = "M"
+        I2.name = "Arthur"
+
+        F1.children = [I1]
+        F2.children = [I2]
+        individuals = [I1, I2]
+        families = [F1, F2]
+        output = utils.us51FamilyHasMaleChild(families, individuals)
+        self.assertEqual(output, ["F1", "F2"])
+
+    def testUS53(self):
+        I1 = script.Individual("I1")
+        I2 = script.Individual("I2")
+        I3 = script.Individual("I3")
+        I4 = script.Individual("I4")
+        I5 = script.Individual("I5")
+        I6 = script.Individual("I6")
+        F1 = script.Family("F1")
+        F2 = script.Family("F2")
+        F3 = script.Family("F3")
+        F1.husbId = "I1"
+        F1.wifeId = "I2"
+        F2.husbId = "I3"
+        F2.wifeId = "I4"
+        F3.husbId = "I5"
+        F3.wifeId = "I6"
+        F1.married = "21 NOV 1985"
+        F2.married = "8 NOV 2015"
+        F1.divorced = "21 NOV 1994"
+        F2.divorced = "8 NOV 2026"
+        F3.married = "8 DEC 2015"
+        F3.divorced = "8 DEC 2024"
+        I1.name = "bobby"
+        I2.name = "barbie"
+        I3.name = "barney"
+        I4.name = "bonnie"
+        I5.name = "bartelby"
+        I6.name = "bethany"
+        output = utils.us52DivorcedInTenYears([F1, F2, F3], [I1, I2, I3, I4, I5, I6])
+        self.assertEqual(output, [['I1', 'I2', 'F1'], ['I5', 'I6', 'F3']])'''
 
 if __name__ == '__main__':
     unittest.main()
