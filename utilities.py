@@ -775,6 +775,39 @@ def us39ListUpcomingAnniversaries(families, individuals):
     return output
 
 '''
+    This function loops through individuals in each family and 
+    returns a list with the oldest family members
+'''
+def us43oldestFamilyMember(families, individuals):
+    output = []
+    age = 0
+    for fam in families:
+        for ind in individuals:
+            if (ind.iD in fam.iD):
+                if (ind.age > age):
+                    age = ind.age
+                    oldest = ind.name
+        output.append(oldest)
+    return output
+
+'''
+    This function loops through individuals in each family and 
+    returns a list with the youngest family members
+'''
+def us44YoungestFamilyMembers(families, individuals):
+    output = []
+    age = 10000
+    for fam in families:
+        for ind in individuals:
+            if (ind.iD in fam.iD):
+                if (ind.age < age):
+                    age = ind.age
+                    youngest = ind.name
+         output.append(youngest)
+    return output
+
+
+'''
     This function loops through individuals and makes sure that
     age exists and is greater than 0 and if there is an error outputs
     that there is a age <= 0 error returns list of id's with errors
