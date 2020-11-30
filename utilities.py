@@ -837,6 +837,31 @@ def us46ListUniqueLastnames(individuals):
     for n in output:
       print("\t",n)
   return output
+'''
+    This functions loops through individuals and returns the list of individuals' ID's 
+    who do not have a first name
+'''
+def us49IndiHaveFirstName(individuals):
+    KEY_WORD = "LIST: US49: "
+    output = []
+    for indi in individuals:
+        firstname = indi.name.split(" ")[0]
+        if not isinstance(firstname, str) or firstname[0] == "/":
+            print(KEY_WORD + indi.iD + ": First name is empty or doesnt exist")
+            output.append(indi.iD)
+    return output
+'''
+    This function loops through individuals and families and lists all families with at least 1 child
+'''
+def us50FamilyHasChild(individuals, families):
+    KEY_WORD = "LIST: US50: "
+    output = []
+    for fam in families:
+        if fam.children != [] and fam.children != "NA":
+            print(KEY_WORD + fam.iD + ": Family has at least one child")
+            output.append(fam.iD)
+    return output
+      
 
 def findMaleChild(childID, individuals):
     for i in individuals:
